@@ -3,17 +3,18 @@ package net.satisfy.skillcraft.skill;
 import net.minecraft.util.Identifier;
 import net.satisfy.skillcraft.Skillcraft;
 import net.satisfy.skillcraft.SkillcraftIdentifier;
-import net.satisfy.skillcraft.json.SkillReader;
+import org.apache.commons.compress.utils.Lists;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class Skills {
-    public static final List<Skillset> SKILLSETS = List.of();
-    public static final Skillset COMBAT_SKILL = createSkillset(new SkillcraftIdentifier("combat"));
-    public static final Skillset BUILDING_SKILL = createSkillset(new SkillcraftIdentifier("build"));
+    public static ArrayList<Identifier> SKILLSETS = Lists.newArrayList();
+    public static final Identifier COMBAT_SKILL = createSkillset(new SkillcraftIdentifier("combat"));
+    public static final Identifier BUILDING_SKILL = createSkillset(new SkillcraftIdentifier("build"));
 
-    private static Skillset createSkillset(Identifier name) {
-        return SkillReader.readJson(name);
+    private static Identifier createSkillset(Identifier name) {
+        SKILLSETS.add(name);
+        return name;
     }
 
     public static void init() {

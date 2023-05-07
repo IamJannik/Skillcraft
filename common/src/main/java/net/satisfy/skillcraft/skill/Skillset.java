@@ -3,12 +3,18 @@ package net.satisfy.skillcraft.skill;
 import java.util.ArrayList;
 
 public class Skillset {
+    private final String id;
     public final String name;
     private final ArrayList<SkillLevel> levels;
 
-    public Skillset(String name, ArrayList<SkillLevel> levels) {
+    public Skillset(String id, String name, ArrayList<SkillLevel> levels) {
+        this.id = id;
         this.name = name;
         this.levels = levels;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public int getMaxLevel() {
@@ -30,6 +36,6 @@ public class Skillset {
 
     @Override
     public String toString() {
-        return "Skillset: " + "name: " + name + '\'' + ", levels: " + levels + ';';
+        return "Skillset: " + " ID: " + id + "/ name: " + name +  ", levels: " + levels + ';';
     }
 }
