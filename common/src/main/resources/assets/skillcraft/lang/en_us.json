@@ -1,3 +1,4 @@
 {
-  "item.skillcraft.example_item": "Example Item"
+  "key.category.skillcraft": "Skillcraft",
+  "key.skillcraft.openskillbook": "Open SkillBook"
 }

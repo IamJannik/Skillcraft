@@ -7,6 +7,7 @@
     "MixinTitleScreen"
   ],
   "mixins": [
+    "SkillcraftEntityDataSaverMixin"
   ],
   "injectors": {
     "defaultRequire": 1

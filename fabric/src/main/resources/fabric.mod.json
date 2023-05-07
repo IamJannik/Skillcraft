@@ -18,11 +18,13 @@
   "entrypoints": {
     "main": [
       "net.satisfy.skillcraft.fabric.SkillcraftFabric"
+    ],
+    "client": [
+      "net.satisfy.skillcraft.fabriclike.client.SkillcraftClientFabricLike"
     ]
   },
   "mixins": [
-    "skillcraft.mixins.json",
-    "skillcraft-common.mixins.json"
+    "skillcraft.mixins.json"
   ],
   "depends": {
     "fabric": "*",
