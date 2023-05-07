@@ -1,0 +1,35 @@
+modLoader = "javafml"
+loaderVersion = "[43,)"
+#issueTrackerURL = ""
+license = "Insert License Here"
+
+[[mods]]
+modId = "skillcraft"
+version = "${version}"
+displayName = "Skillcraft"
+authors = "satisfy & BMJO"
+description = '''
+This is an example description! Tell everyone what your mod is about!
+'''
+#logoFile = ""
+
+[[dependencies.skillcraft]]
+modId = "forge"
+mandatory = true
+versionRange = "[43,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.skillcraft]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.19.2,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.skillcraft]]
+modId = "architectury"
+mandatory = true
+versionRange = "[6.5.77,)"
+ordering = "AFTER"
+side = "BOTH"

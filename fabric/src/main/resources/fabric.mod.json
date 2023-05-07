@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "skillcraft",
+  "version": "${version}",
+  "name": "Skillcraft",
+  "description": "This is an example description! Tell everyone what your mod is about!",
+  "authors": [
+    "satisfy",
+    "BMJO"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+  "license": "Insert License Here",
+  "icon": "assets/skillcraft/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.satisfy.skillcraft.fabric.SkillcraftFabric"
+    ]
+  },
+  "mixins": [
+    "skillcraft.mixins.json",
+    "skillcraft-common.mixins.json"
+  ],
+  "depends": {
+    "fabric": "*",
+    "minecraft": ">=1.19.2",
+    "architectury": ">=6.5.77"
+  }
+}
