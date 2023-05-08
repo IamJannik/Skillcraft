@@ -8,26 +8,26 @@ import net.satisfy.skillcraft.networking.SkillcraftNetworking;
 import net.satisfy.skillcraft.util.IEntityDataSaver;
 import net.satisfy.skillcraft.util.SkillcraftUtil;
 
-public class SkillLevelData {
-    public static int grantLevel(IEntityDataSaver player, int amount) {
+public class SkillData {
+    public static int grantSkill(IEntityDataSaver player, int amount) {
         NbtCompound nbt = player.getPersistentData();
         int level = nbt.getInt("level");
         level += amount;
 
         nbt.putInt("level", level);
-        syncLevel(level, (ServerPlayerEntity) player);
+        syncSkill(level, (ServerPlayerEntity) player);
         return level;
     }
 
-    public static int resetLevel(IEntityDataSaver player) {
+    public static int resetSkill(IEntityDataSaver player) {
         NbtCompound nbt = player.getPersistentData();
         int level = 0;
         nbt.putInt("level", level);
-        syncLevel(level, (ServerPlayerEntity) player);
+        syncSkill(level, (ServerPlayerEntity) player);
         return level;
     }
 
-    public static void syncLevel(int level, ServerPlayerEntity player) {
+    public static void syncSkill(int level, ServerPlayerEntity player) {
         PacketByteBuf buffer = SkillcraftUtil.createPacketBuf();
         buffer.writeInt(level);
         NetworkManager.sendToPlayer(player, SkillcraftNetworking.SKILL_LEVEL_SYNC_ID, buffer);

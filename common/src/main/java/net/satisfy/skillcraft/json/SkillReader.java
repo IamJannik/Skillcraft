@@ -23,8 +23,8 @@ public class SkillReader {
     }
 
     public Skillset load(ResourceManager manager) {
-        List<Resource> resources = getSkillJsons(manager);
-        return readJson(resources);
+        List<Resource> jsons = getJsons(manager);
+        return readJson(jsons);
     }
 
     public Skillset readJson(List<Resource> resources) {
@@ -41,7 +41,7 @@ public class SkillReader {
         return new Skillset(path.getNamespace(), path.getNamespace(), "ERROR - COULD NOT FIND FILE", Lists.newArrayList());
     }
 
-    private List<Resource> getSkillJsons(ResourceManager manager) {
+    private List<Resource> getJsons(ResourceManager manager) {
         List<Resource> resources = Lists.newArrayList();
         for (String namespace : manager.getAllNamespaces()) {
             manager.getResource(new Identifier(namespace, "/skills/" + this.path.getPath() + JSON_EXTENSION)).ifPresent(resources::add);

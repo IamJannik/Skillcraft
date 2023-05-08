@@ -25,7 +25,6 @@ public class SkillLoader implements ResourceReloader {
                 (skillset) -> this.buildSkillGroup(manager, prepareExecutor, skillset)).toList();
         CompletableFuture<Void> completableFuture = CompletableFuture.allOf(completableFutures.toArray(CompletableFuture[]::new));
         Objects.requireNonNull(synchronizer);
-        System.out.println("SKILLS: " + REGISTRY_SKILLS);
         return completableFuture.thenCompose(synchronizer::whenPrepared).thenAcceptAsync(
                 (void_) -> this.REGISTRY_SKILLS = completableFutures.stream().map(CompletableFuture::join).toList(), applyExecutor);
     }
