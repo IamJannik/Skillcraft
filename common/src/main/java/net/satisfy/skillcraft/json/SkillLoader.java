@@ -14,13 +14,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 public class SkillLoader implements ResourceReloader {
-    private List<RegistrySkills> REGISTRY_SKILLS = Lists.newArrayList();
+    public List<RegistrySkills> REGISTRY_SKILLS = Lists.newArrayList();
 
     public SkillLoader() {
-    }
-
-    public List<RegistrySkills> getRegistrySkills() {
-        return this.REGISTRY_SKILLS;
     }
 
     @Override
@@ -29,6 +25,7 @@ public class SkillLoader implements ResourceReloader {
                 (skillset) -> this.buildSkillGroup(manager, prepareExecutor, skillset)).toList();
         CompletableFuture<Void> completableFuture = CompletableFuture.allOf(completableFutures.toArray(CompletableFuture[]::new));
         Objects.requireNonNull(synchronizer);
+        System.out.println("SKILLS: " + REGISTRY_SKILLS);
         return completableFuture.thenCompose(synchronizer::whenPrepared).thenAcceptAsync(
                 (void_) -> this.REGISTRY_SKILLS = completableFutures.stream().map(CompletableFuture::join).toList(), applyExecutor);
     }
@@ -38,17 +35,7 @@ public class SkillLoader implements ResourceReloader {
         return CompletableFuture.supplyAsync(() -> new RegistrySkills(skillGroupLoader.load(resourceManager)), prepareExecutor);
     }
 
-    public static String getPath(String name) {
-        return name;
-    }
-
     public record RegistrySkills(Skillset skills) {
-        public RegistrySkills(Skillset skills) {
-            this.skills = skills;
-        }
 
-        public Skillset skills() {
-            return this.skills;
-        }
     }
 }

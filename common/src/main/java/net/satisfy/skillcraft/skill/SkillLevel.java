@@ -5,12 +5,14 @@ public class SkillLevel {
     public final int level;
     @Nullable
     private final String name;
+    @Nullable
     private final String description;
+
     //private final ArrayList<Item> unlock;
     //@Nullable
     //private final Item reward;
 
-    public SkillLevel(int level, @Nullable String name, @Nullable String description/*, @Nullable ArrayList<Item> unlock, @Nullable Item reward*/) {
+    public SkillLevel(int level, @Nullable String name, @Nullable String description/*, ArrayList<Item> unlock, @Nullable Item reward*/) {
         this.level = level;
         this.name = name;
         this.description = description;

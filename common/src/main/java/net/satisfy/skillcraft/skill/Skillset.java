@@ -1,20 +1,38 @@
 package net.satisfy.skillcraft.skill;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 
 public class Skillset {
     private final String id;
+    @Nullable
     public final String name;
+    @Nullable
+    private final String description;
     private final ArrayList<SkillLevel> levels;
 
-    public Skillset(String id, String name, ArrayList<SkillLevel> levels) {
+    public Skillset(String id, ArrayList<SkillLevel> levels) {
+        this(id, null, null, levels);
+    }
+
+    public Skillset(String id, @Nullable String name, @Nullable String description, ArrayList<SkillLevel> levels) {
         this.id = id;
         this.name = name;
+        this.description = description;
         this.levels = levels;
     }
 
     public String getId() {
         return id;
+    }
+
+    public String getName() {
+        return name == null ? id : name;
+    }
+
+    public String getDescription() {
+        return description == null ? "Add a description to the Json File." : description;
     }
 
     public int getMaxLevel() {
@@ -36,6 +54,6 @@ public class Skillset {
 
     @Override
     public String toString() {
-        return "Skillset: " + " ID: " + id + "/ name: " + name +  ", levels: " + levels + ';';
+        return "Skillset: " + " ID: " + id + "/ name: " + getName() +  ", levels: " + levels + ';';
     }
 }

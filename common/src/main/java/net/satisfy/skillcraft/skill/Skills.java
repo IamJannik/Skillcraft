@@ -12,10 +12,10 @@ import java.util.ArrayList;
 
 public class Skills {
     public static ArrayList<Identifier> SKILLSETS = Lists.newArrayList();
-    public static final Identifier COMBAT_SKILL = createSkillset(new SkillcraftIdentifier("combat"));
-    public static final Identifier BUILDING_SKILL = createSkillset(new SkillcraftIdentifier("build"));
+    public static final Identifier COMBAT_SKILL = registerSkill(new SkillcraftIdentifier("combat"));
+    public static final Identifier BUILDING_SKILL = registerSkill(new SkillcraftIdentifier("build"));
 
-    private static Identifier createSkillset(Identifier name) {
+    public static Identifier registerSkill(Identifier name) {
         SKILLSETS.add(name);
         return name;
     }
