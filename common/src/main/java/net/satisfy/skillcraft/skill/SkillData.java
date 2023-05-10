@@ -9,20 +9,20 @@ import net.satisfy.skillcraft.util.IEntityDataSaver;
 import net.satisfy.skillcraft.util.SkillcraftUtil;
 
 public class SkillData {
-    public static int grantSkill(IEntityDataSaver player, int amount) {
+    public static int grantSkill(IEntityDataSaver player, String key, int amount) {
         NbtCompound nbt = player.getPersistentData();
-        int level = nbt.getInt("level");
+        int level = nbt.getInt(key);
         level += amount;
 
-        nbt.putInt("level", level);
+        nbt.putInt(key, level);
         syncSkill(level, (ServerPlayerEntity) player);
         return level;
     }
 
-    public static int resetSkill(IEntityDataSaver player) {
+    public static int resetSkill(IEntityDataSaver player, String key) {
         NbtCompound nbt = player.getPersistentData();
         int level = 0;
-        nbt.putInt("level", level);
+        nbt.putInt(key, level);
         syncSkill(level, (ServerPlayerEntity) player);
         return level;
     }

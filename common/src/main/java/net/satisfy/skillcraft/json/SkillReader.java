@@ -1,13 +1,10 @@
 package net.satisfy.skillcraft.json;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
 import net.minecraft.resource.Resource;
-import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.satisfy.skillcraft.skill.Skillset;
-import org.apache.commons.compress.utils.Lists;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,37 +12,40 @@ import java.util.List;
 
 public class SkillReader {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().serializeNulls().create();
+    private static final String REPLACE_KEY = "replace";
     private static final String JSON_EXTENSION = ".json";
-    private final Identifier path;
 
-    public SkillReader(Identifier path) {
-        this.path = path;
+    public SkillReader() {
     }
 
-    public Skillset load(ResourceManager manager) {
-        List<Resource> jsons = getJsons(manager);
-        return readJson(jsons);
+    public static Skillset convertSkill(JsonObject jsonObject) {
+        return GSON.fromJson(jsonObject, Skillset.class);
     }
 
-    public Skillset readJson(List<Resource> resources) {
-        if (resources.size() > 0) { //TODO
+    public static JsonObject read(Identifier identifier, Resource resource) {
+        return readJson(identifier, resource);
+    }
+
+    @Nullable
+    private static JsonObject readJson(Identifier identifier, Resource resource) {
             try {
-                BufferedReader reader = new BufferedReader(resources.get(0).getReader());
-                JsonObject jo = GSON.fromJson(reader, JsonObject.class);
-                jo.addProperty("id", this.path.getPath());
-                return GSON.fromJson(jo, Skillset.class);
+                BufferedReader reader = new BufferedReader(resource.getReader());
+                JsonObject jsonObject = GSON.fromJson(reader, JsonObject.class);
+                jsonObject.addProperty("id", identifier.getPath().replace("skills/", "").replace(JSON_EXTENSION, ""));
+                return jsonObject;
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-        return new Skillset(path.getNamespace(), path.getNamespace(), "ERROR - COULD NOT FIND FILE", Lists.newArrayList());
+        return null;
     }
 
-    private List<Resource> getJsons(ResourceManager manager) {
-        List<Resource> resources = Lists.newArrayList();
-        for (String namespace : manager.getAllNamespaces()) {
-            manager.getResource(new Identifier(namespace, "/skills/" + this.path.getPath() + JSON_EXTENSION)).ifPresent(resources::add);
+    public static Skillset combineSkillsets(List<JsonObject> skillJsons) {
+        skillJsons.sort(new SkillJsonComperator());
+        if (skillJsons.stream().anyMatch(jsonObject -> jsonObject.get(REPLACE_KEY).getAsBoolean())) {
+            List<JsonObject> replaceSkills = skillJsons.stream().filter(jsonObject -> jsonObject.get(REPLACE_KEY).getAsBoolean()).toList();
+            return convertSkill(replaceSkills.get(0)); //return Skill with REPLACE=true & highest WEIGHT
         }
-        return resources;
+        //combine Skills
+        return convertSkill(skillJsons.get(0)); //TODO combine SKILLS
     }
 }

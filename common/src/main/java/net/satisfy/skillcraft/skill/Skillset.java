@@ -3,6 +3,7 @@ package net.satisfy.skillcraft.skill;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Skillset {
     private final String id;
@@ -54,6 +55,18 @@ public class Skillset {
 
     @Override
     public String toString() {
-        return "Skillset: " + " ID: " + id + "/ name: " + getName() +  ", levels: " + levels + ';';
+        return "Skillset: " + " ID: " + id + " / name: " + getName() +  ", levels: " + levels + ';';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Skillset skillset)) return false;
+        return id.equals(skillset.id) && Objects.equals(this.getName(), skillset.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, getName());
     }
 }

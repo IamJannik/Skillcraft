@@ -1,5 +1,6 @@
 {
   "replace": false,
+  "weight": 0,
   "id": "combat",
   "name": "COMBAT",
   "levels": [

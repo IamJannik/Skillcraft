@@ -7,5 +7,6 @@ public interface ISkillItem {
     boolean hasRequiredLevel(PlayerEntity player, Item item);
     int getRequiredLevel();
     void setRequiredLevel(int level);
+    void setSkillKey(String key);
 
 }

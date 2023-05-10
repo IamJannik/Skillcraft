@@ -25,10 +25,8 @@ public class ItemStackMixin {
         Item item = itemStack.getItem();
         if (item instanceof ISkillItem skillItem) {
             if (!skillItem.hasRequiredLevel(user, item)) {
-                user.sendMessage(Text.literal("You haven't reached the required level to use " + item.getName() + ". (" + skillItem.getRequiredLevel() + ")").formatted(Formatting.RED));
                 cir.setReturnValue(TypedActionResult.fail(itemStack));
             }
-            user.sendMessage(Text.literal("You have reached the required level to use " + item.getName() + ". (" + skillItem.getRequiredLevel() + ")").formatted(Formatting.GOLD));
         }
 
     }
