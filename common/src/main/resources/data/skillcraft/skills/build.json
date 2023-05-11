@@ -1,7 +1,7 @@
 {
   "replace": false,
   "weight": 0,
-  "id": "build",
+  "id": "skillcraft:build",
   "name": "BUILDING",
   "levels": [
     {

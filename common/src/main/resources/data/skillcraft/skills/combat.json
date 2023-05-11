@@ -1,7 +1,7 @@
 {
   "replace": false,
   "weight": 0,
-  "id": "combat",
+  "id": "skillcraft:combat",
   "name": "COMBAT",
   "levels": [
     {

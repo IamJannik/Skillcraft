@@ -1,35 +1,32 @@
 package net.satisfy.skillcraft.skill;
 
+import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class Skillset {
-    private final String id;
+    private final Identifier id;
     @Nullable
     public final String name;
     @Nullable
     private final String description;
     private final ArrayList<SkillLevel> levels;
 
-    public Skillset(String id, ArrayList<SkillLevel> levels) {
-        this(id, null, null, levels);
-    }
-
-    public Skillset(String id, @Nullable String name, @Nullable String description, ArrayList<SkillLevel> levels) {
+    public Skillset(Identifier id, @Nullable String name, @Nullable String description, ArrayList<SkillLevel> levels) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.levels = levels;
     }
 
-    public String getId() {
+    public Identifier getId() {
         return id;
     }
 
     public String getName() {
-        return name == null ? id : name;
+        return name == null ? id.getPath() : name;
     }
 
     public String getDescription() {

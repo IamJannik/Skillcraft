@@ -12,6 +12,7 @@ import net.satisfy.skillcraft.Skillcraft;
 import net.satisfy.skillcraft.skill.Skillset;
 import org.apache.commons.compress.utils.Lists;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -19,7 +20,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 public class SkillLoader implements ResourceReloader {
-    public List<Skillset> REGISTRY_SKILLS = Lists.newArrayList();
+    public static Map<Identifier, Skillset> REGISTRY_SKILLS = new HashMap<>();
     private static final String SKILL_PATH = "skills";
 
     public SkillLoader() {
@@ -32,7 +33,7 @@ public class SkillLoader implements ResourceReloader {
         CompletableFuture<Void> completableFuture = CompletableFuture.allOf(completableFutures.toArray(CompletableFuture[]::new));
         Objects.requireNonNull(synchronizer);
         return completableFuture.thenCompose(synchronizer::whenPrepared).thenAcceptAsync(
-                (void_) -> this.REGISTRY_SKILLS = completableFutures.stream().map(CompletableFuture::join).toList(), applyExecutor);
+                (void_) -> completableFutures.forEach((completableFutureSkillset) -> completableFutures.stream().map(CompletableFuture::join).forEach(skillset -> REGISTRY_SKILLS.put(skillset.getId(), skillset))), applyExecutor);
     }
 
     private List<CompletableFuture<Skillset>> buildSkillsets(ResourceManager resourceManager, Executor prepareExecutor) {
@@ -43,11 +44,11 @@ public class SkillLoader implements ResourceReloader {
         for (Identifier identifier : skillJsons.keySet()) {
             if (skillJsons.get(identifier).isEmpty()) continue;
             if (skillJsons.get(identifier).size() == 1) {
-                JsonObject jsonObject = SkillReader.read(identifier, skillJsons.get(identifier).get(0));
+                JsonObject jsonObject = SkillReader.read(skillJsons.get(identifier).get(0));
                 skills.add(CompletableFuture.supplyAsync(
                         () -> SkillConvertor.convertSkill(jsonObject)));
             } else {
-                Skillset skillset = combineMultipleSkillset(identifier, skillJsons.get(identifier));
+                Skillset skillset = combineMultipleSkillset(skillJsons.get(identifier));
                 skills.add(CompletableFuture.supplyAsync(
                         () -> skillset, prepareExecutor));
             }
@@ -55,10 +56,10 @@ public class SkillLoader implements ResourceReloader {
         return skills;
     }
 
-    private Skillset combineMultipleSkillset(Identifier identifier, List<Resource> resources) {
+    private Skillset combineMultipleSkillset(List<Resource> resources) {
         List<JsonObject> skillJsons = Lists.newArrayList();
         for (Resource resource : resources) {
-            skillJsons.add(SkillReader.read(identifier, resource));
+            skillJsons.add(SkillReader.read(resource));
         }
         return SkillReader.combineSkillsets(skillJsons);
     }

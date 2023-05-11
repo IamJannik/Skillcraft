@@ -2,7 +2,6 @@ package net.satisfy.skillcraft.json;
 
 import com.google.gson.*;
 import net.minecraft.resource.Resource;
-import net.minecraft.util.Identifier;
 import net.satisfy.skillcraft.skill.Skillset;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,22 +12,19 @@ import java.util.List;
 public class SkillReader {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().serializeNulls().create();
     private static final String REPLACE_KEY = "replace";
-    private static final String JSON_EXTENSION = ".json";
 
     public SkillReader() {
     }
 
-    public static JsonObject read(Identifier identifier, Resource resource) {
-        return readJson(identifier, resource);
+    public static JsonObject read(Resource resource) {
+        return readJson(resource);
     }
 
     @Nullable
-    private static JsonObject readJson(Identifier identifier, Resource resource) {
+    private static JsonObject readJson(Resource resource) {
             try {
                 BufferedReader reader = new BufferedReader(resource.getReader());
-                JsonObject jsonObject = GSON.fromJson(reader, JsonObject.class);
-                jsonObject.addProperty("id", identifier.getPath().replace("skills/", "").replace(JSON_EXTENSION, ""));
-                return jsonObject;
+                return GSON.fromJson(reader, JsonObject.class);
             } catch (IOException e) {
                 e.printStackTrace();
             }

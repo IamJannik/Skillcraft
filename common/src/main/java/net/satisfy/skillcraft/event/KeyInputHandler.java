@@ -7,7 +7,8 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.text.Text;
+import net.minecraft.network.PacketByteBuf;
+import net.satisfy.skillcraft.client.screen.SkillBookScreen;
 import net.satisfy.skillcraft.networking.SkillcraftNetworking;
 import org.lwjgl.glfw.GLFW;
 
@@ -28,8 +29,10 @@ public class KeyInputHandler {
     public static void registerKeyInputs() {
         ClientTickEvent.CLIENT_POST.register(client -> {
             if(openSkillBookKey.wasPressed() && client.player != null) {
-                client.player.sendMessage(Text.of("Imagine now the book is opened."), true);
-                NetworkManager.sendToServer(SkillcraftNetworking.SKILL_LEVEL_ID, createPacketBuf());
+                client.setScreen(new SkillBookScreen());
+                PacketByteBuf buf = createPacketBuf();
+                buf.writeString("combat"); //TODO dynamic wo man raufklickt
+                NetworkManager.sendToServer(SkillcraftNetworking.SKILL_LEVEL_ID, buf);
             }
         });
     }
