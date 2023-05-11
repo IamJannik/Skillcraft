@@ -18,10 +18,6 @@ public class SkillReader {
     public SkillReader() {
     }
 
-    public static Skillset convertSkill(JsonObject jsonObject) {
-        return GSON.fromJson(jsonObject, Skillset.class);
-    }
-
     public static JsonObject read(Identifier identifier, Resource resource) {
         return readJson(identifier, resource);
     }
@@ -43,9 +39,9 @@ public class SkillReader {
         skillJsons.sort(new SkillJsonComperator());
         if (skillJsons.stream().anyMatch(jsonObject -> jsonObject.get(REPLACE_KEY).getAsBoolean())) {
             List<JsonObject> replaceSkills = skillJsons.stream().filter(jsonObject -> jsonObject.get(REPLACE_KEY).getAsBoolean()).toList();
-            return convertSkill(replaceSkills.get(0)); //return Skill with REPLACE=true & highest WEIGHT
+            return SkillConvertor.convertSkill(replaceSkills.get(0)); //returns Skill with REPLACE=true & highest WEIGHT
         }
         //combine Skills
-        return convertSkill(skillJsons.get(0)); //TODO combine SKILLS
+        return SkillConvertor.convertSkill(skillJsons.get(0)); //TODO combine SKILLS
     }
 }

@@ -1,5 +1,9 @@
 package net.satisfy.skillcraft.skill;
+import com.google.common.collect.Lists;
+import net.minecraft.item.Item;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
 
 public class SkillLevel {
     public final int level;
@@ -8,16 +12,16 @@ public class SkillLevel {
     @Nullable
     private final String description;
 
-    //private final ArrayList<Item> unlock;
-    //@Nullable
-    //private final Item reward;
+    private final ArrayList<Item> unlock;
+    @Nullable
+    private final Item reward;
 
-    public SkillLevel(int level, @Nullable String name, @Nullable String description/*, ArrayList<Item> unlock, @Nullable Item reward*/) {
+    public SkillLevel(int level, @Nullable String name, @Nullable String description, @Nullable ArrayList<Item> unlock, @Nullable Item reward) {
         this.level = level;
         this.name = name;
         this.description = description;
-        //this.unlock = unlock == null ? Lists.newArrayList() : unlock;
-        //this.reward = reward;
+        this.unlock = unlock == null ? Lists.newArrayList() : unlock;
+        this.reward = reward;
     }
 
     public String getName() {
@@ -28,7 +32,6 @@ public class SkillLevel {
         return description != null ? description : "Add Description in JSON";
     }
 
-    /*
     public ArrayList<Item> getUnlockItems() {
         return this.unlock;
     }
@@ -37,7 +40,6 @@ public class SkillLevel {
     public Item getReward() {
         return this.reward;
     }
-     */
 
     @Override
     public String toString() {

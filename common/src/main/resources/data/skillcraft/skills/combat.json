@@ -14,7 +14,7 @@
       "name": "Padavan",
       "description": "I will teach you how to fight.",
       "unlock": [
-        "minecraft:wood_sword"
+        "minecraft:wooden_sword"
       ]
     },
     {
@@ -22,10 +22,10 @@
       "name": "Zerberster",
       "description": "You could kill anyone except yourself because you would be to strong for you.",
       "unlock": [
-        "minecraft:wood_axe",
+        "minecraft:wooden_axe",
         "minecraft:stone_sword"
       ],
-      "reward": "minecraft:wood_sword"
+      "reward": "minecraft:wooden_sword"
     }
   ]
 }

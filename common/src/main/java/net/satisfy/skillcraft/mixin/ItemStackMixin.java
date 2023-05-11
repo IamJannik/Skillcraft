@@ -5,9 +5,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
-import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
@@ -38,7 +36,6 @@ public class ItemStackMixin {
         if (item instanceof ISkillItem skillItem) {
             PlayerEntity player = context.getPlayer();
             if (player != null && !skillItem.hasRequiredLevel(player, item)) {
-                player.sendMessage(Text.literal("You haven't reached the required level to use " + item.getName() + ". (" + skillItem.getRequiredLevel() + ")").formatted(Formatting.GOLD));
                 cir.setReturnValue(ActionResult.FAIL);
             }
         }
@@ -50,7 +47,6 @@ public class ItemStackMixin {
         Item item = itemStack.getItem();
         if (item instanceof ISkillItem skillItem) {
             if (!skillItem.hasRequiredLevel(user, item)) {
-                user.sendMessage(Text.literal("You haven't reached the required level to use " + item.getName() + ". (" + skillItem.getRequiredLevel() + ")").formatted(Formatting.GOLD));
                 cir.setReturnValue(ActionResult.FAIL);
             }
         }

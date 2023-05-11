@@ -1,9 +1,11 @@
 package net.satisfy.skillcraft.json;
 
 import com.google.gson.JsonObject;
+import dev.architectury.registry.ReloadListenerRegistry;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourceReloader;
+import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.profiler.Profiler;
 import net.satisfy.skillcraft.Skillcraft;
@@ -43,11 +45,11 @@ public class SkillLoader implements ResourceReloader {
             if (skillJsons.get(identifier).size() == 1) {
                 JsonObject jsonObject = SkillReader.read(identifier, skillJsons.get(identifier).get(0));
                 skills.add(CompletableFuture.supplyAsync(
-                        () -> SkillReader.convertSkill(jsonObject)));
+                        () -> SkillConvertor.convertSkill(jsonObject)));
             } else {
                 Skillset skillset = combineMultipleSkillset(identifier, skillJsons.get(identifier));
                 skills.add(CompletableFuture.supplyAsync(
-                        () -> skillset));
+                        () -> skillset, prepareExecutor));
             }
         }
         return skills;
@@ -63,5 +65,9 @@ public class SkillLoader implements ResourceReloader {
 
     private static Map<Identifier, List<Resource>> getJsons(ResourceManager resourceManager) {
         return resourceManager.findAllResources(SKILL_PATH, (identifier) -> identifier.getNamespace().equals(Skillcraft.MOD_ID));
+    }
+
+    public static void init() {
+        ReloadListenerRegistry.register(ResourceType.SERVER_DATA, new SkillLoader());
     }
 }
