@@ -34,7 +34,7 @@ public class SkillLevelWidget extends DrawableHelper implements Drawable, Elemen
     private final TextRenderer textRenderer;
     private final PlayerEntity player;
     private final TextFieldWidget currentLevel;
-    private TextFieldWidget nextLevel;
+    private final TextFieldWidget nextLevel;
     private final List<LevelButton> levelUpButtons = Lists.newArrayList();
     private final NbtCompound persistentData;
     private final int x;

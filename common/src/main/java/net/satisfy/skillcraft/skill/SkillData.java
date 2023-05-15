@@ -4,7 +4,6 @@ import dev.architectury.networking.NetworkManager;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Identifier;
 import net.satisfy.skillcraft.networking.SkillcraftNetworking;
 import net.satisfy.skillcraft.util.IEntityDataSaver;
 import net.satisfy.skillcraft.util.SkillcraftUtil;
