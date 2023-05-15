@@ -9,6 +9,8 @@ public class LevelSyncS2CPacket implements NetworkManager.NetworkReceiver {
     @Override
     public void receive(PacketByteBuf buf, NetworkManager.PacketContext context) {
         PlayerEntity player = context.getPlayer();
-        ((IEntityDataSaver) player).getPersistentData().putInt("level", buf.readInt());
+        String skill = buf.readString();
+        int level = buf.readInt();
+        ((IEntityDataSaver) player).getPersistentData().putInt(skill, level);
     }
 }

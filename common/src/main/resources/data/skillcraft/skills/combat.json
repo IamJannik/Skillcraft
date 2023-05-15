@@ -26,6 +26,41 @@
         "minecraft:stone_sword"
       ],
       "reward": "minecraft:wooden_sword"
+    },
+    {
+      "level": 3,
+      "name": "3",
+      "description": "3",
+      "unlock": [
+      ]
+    },
+    {
+      "level": 4,
+      "name": "4",
+      "description": "4",
+      "unlock": [
+      ]
+    },
+    {
+      "level": 5,
+      "name": "5",
+      "description": "5",
+      "unlock": [
+      ]
+    },
+    {
+      "level": 6,
+      "name": "6",
+      "description": "6",
+      "unlock": [
+      ]
+    },
+    {
+      "level": 7,
+      "name": "7",
+      "description": "7",
+      "unlock": [
+      ]
     }
   ]
 }

@@ -6,7 +6,9 @@ import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
+import net.satisfy.skillcraft.SkillcraftIdentifier;
 
 import java.util.List;
 
@@ -14,9 +16,12 @@ public class SkillScrollWidget extends ClickableWidget {
     private final List<SkillButton> skillButtons;
     private double scrollY;
     private boolean scrollbarDragged;
+    public final static int WIDTH = 147;
+    public final static int HEIGHT = 163;
+    private static final Identifier BACKGROUND;
 
     public SkillScrollWidget(int x, int y, List<SkillButton> skillButtons) {
-        super(x, y, SkillBookScreen.WIDTH / 2, SkillBookScreen.HEIGHT, Text.of(""));
+        super(x, y, WIDTH, HEIGHT, Text.of(""));
         this.skillButtons = skillButtons;
     }
 
@@ -32,13 +37,11 @@ public class SkillScrollWidget extends ClickableWidget {
                 this.scrollbarDragged = true;
                 return true;
             }
-            boolean result = super.mouseClicked(mouseX, mouseY, button);
             for (SkillButton skillButton : this.skillButtons) {
                 if (skillButton.mouseClicked(mouseX, mouseY + scrollY, button)) {
                     return true;
                 }
             }
-            return result;
         }
         return false;
     }
@@ -98,12 +101,21 @@ public class SkillScrollWidget extends ClickableWidget {
 
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        this.renderBackground(matrices);
         super.render(matrices, mouseX, mouseY, delta);
+    }
+
+    public void renderBackground(MatrixStack matrices) {
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderTexture(0, BACKGROUND);
+
+        this.drawTexture(matrices, this.x, this.y, 0, 0, WIDTH, HEIGHT);
     }
 
     @Override
     public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        enableScissor(this.x + 1, this.y + 1, this.x + this.width - 1, this.y + this.height - 1);
+        enableScissor(this.x + 26, this.y + 46, this.x + 124, this.y + 127);
         matrices.push();
         matrices.translate(0.0, -this.scrollY, 0.0);
         this.renderButtons(matrices, mouseX, mouseY + (int)scrollY, delta);
@@ -119,25 +131,7 @@ public class SkillScrollWidget extends ClickableWidget {
     }
 
     private void renderScrollButton() {
-        //TODO
-        int i = this.getScrollbarHeight();
-        int j = this.x + this.width;
-        int k = this.x + this.width + 8;
-        int l = Math.max(this.y, (int)this.scrollY * (this.height - i) / this.getMaxScrollY() + this.y);
-        int m = l + i;
-        RenderSystem.setShader(GameRenderer::getPositionColorShader);
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferBuilder = tessellator.getBuffer();
-        bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-        bufferBuilder.vertex(j, m, 0.0).color(128, 128, 128, 255).next();
-        bufferBuilder.vertex(k, m, 0.0).color(128, 128, 128, 255).next();
-        bufferBuilder.vertex(k, l, 0.0).color(128, 128, 128, 255).next();
-        bufferBuilder.vertex(j, l, 0.0).color(128, 128, 128, 255).next();
-        bufferBuilder.vertex(j, (m - 1), 0.0).color(192, 192, 192, 255).next();
-        bufferBuilder.vertex((k - 1), (m - 1), 0.0).color(192, 192, 192, 255).next();
-        bufferBuilder.vertex((k - 1), l, 0.0).color(192, 192, 192, 255).next();
-        bufferBuilder.vertex(j, l, 0.0).color(192, 192, 192, 255).next();
-        tessellator.draw();
+        //TODO renderScrollButton
     }
 
     private int getScrollbarHeight() {
@@ -151,5 +145,9 @@ public class SkillScrollWidget extends ClickableWidget {
     @Override
     public void appendNarrations(NarrationMessageBuilder builder) {
 
+    }
+
+    static {
+        BACKGROUND = new SkillcraftIdentifier("textures/gui/skillcraft_book_left.png");
     }
 }
