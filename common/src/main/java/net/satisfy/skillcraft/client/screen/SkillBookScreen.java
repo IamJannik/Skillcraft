@@ -10,7 +10,6 @@ import net.satisfy.skillcraft.json.SkillLoader;
 import net.satisfy.skillcraft.skill.Skillset;
 import net.satisfy.skillcraft.util.SkillComparator;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

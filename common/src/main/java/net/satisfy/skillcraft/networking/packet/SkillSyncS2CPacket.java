@@ -1,7 +1,6 @@
 package net.satisfy.skillcraft.networking.packet;
 
 import dev.architectury.networking.NetworkManager;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
 import net.satisfy.skillcraft.util.IEntityDataSaver;
 

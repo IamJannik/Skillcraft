@@ -9,15 +9,12 @@ import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.profiler.Profiler;
 import net.satisfy.skillcraft.Skillcraft;
-import net.satisfy.skillcraft.skill.SkillLevel;
 import net.satisfy.skillcraft.skill.Skillset;
-import net.satisfy.skillcraft.util.SkillComparator;
 import org.apache.commons.compress.utils.Lists;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
-import java.util.stream.Stream;
 
 public class SkillLoader implements ResourceReloader {
     public static Map<Identifier, Skillset> REGISTRY_SKILLS = new HashMap<>();

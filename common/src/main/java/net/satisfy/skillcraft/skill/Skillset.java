@@ -1,6 +1,5 @@
 package net.satisfy.skillcraft.skill;
 
-import it.unimi.dsi.fastutil.ints.IntComparator;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
