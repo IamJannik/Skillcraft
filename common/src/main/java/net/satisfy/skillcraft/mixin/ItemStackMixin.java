@@ -26,7 +26,6 @@ public class ItemStackMixin {
                 cir.setReturnValue(TypedActionResult.fail(itemStack));
             }
         }
-
     }
 
     @Inject(method = "useOnBlock",  at = @At("HEAD"), cancellable = true)

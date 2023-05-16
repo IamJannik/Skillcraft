@@ -27,7 +27,7 @@ public class SkillBookScreen extends Screen {
 
     public SkillBookScreen() {
         super(Text.literal("SKILLS").formatted(Formatting.GOLD));
-        currentSkill = new SkillcraftIdentifier("build");
+        currentSkill = new SkillcraftIdentifier("combat");
     }
 
     @Override

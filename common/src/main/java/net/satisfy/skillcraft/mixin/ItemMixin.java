@@ -6,7 +6,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import net.satisfy.skillcraft.SkillcraftIdentifier;
 import net.satisfy.skillcraft.util.IEntityDataSaver;
 import net.satisfy.skillcraft.util.ISkillItem;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,7 +13,7 @@ import org.spongepowered.asm.mixin.Mixin;
 @Mixin(Item.class)
 public class ItemMixin implements ISkillItem {
 
-    private Identifier skillKey = new SkillcraftIdentifier("build");
+    private Identifier skillKey;
     private int requiredLevel = 0;
 
     @Override
@@ -22,7 +21,7 @@ public class ItemMixin implements ISkillItem {
         NbtCompound nbtCompound = ((IEntityDataSaver)player).getPersistentData();
         boolean enough = nbtCompound.getInt(skillKey.toString()) >= requiredLevel;
         player.sendMessage(enough ?
-                Text.literal("You have reached the required level to use " + item.getName() + ". (" + requiredLevel + ")").formatted(Formatting.GOLD) :
+                Text.literal("You have reached the required level to use " + item.getName() + ". (" + requiredLevel + ")").formatted(Formatting.GREEN) :
                 Text.literal("You haven't reached the required level to use " + item.getName() + ". (" + requiredLevel + ")").formatted(Formatting.RED));
         return enough;
     }
