@@ -1,10 +1,10 @@
 package net.satisfy.skillcraft.skill;
 
+import it.unimi.dsi.fastutil.ints.IntComparator;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Objects;
+import java.util.*;
 
 public class Skillset {
     private final Identifier id;
@@ -12,9 +12,9 @@ public class Skillset {
     public final String name;
     @Nullable
     private final String description;
-    private final ArrayList<SkillLevel> levels;
+    private final Map<Integer, SkillLevel> levels;
 
-    public Skillset(Identifier id, @Nullable String name, @Nullable String description, ArrayList<SkillLevel> levels) {
+    public Skillset(Identifier id, @Nullable String name, @Nullable String description, Map<Integer, SkillLevel> levels) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -34,14 +34,30 @@ public class Skillset {
     }
 
     public int getMaxLevel() {
-        return levels.size() - 1;
+        return levels.keySet().stream().max(Comparator.comparingInt(x -> x)).orElse(0);
     }
 
     public boolean isMax(int level) {
-        return level >= getMaxLevel();
+        return level > getMaxLevel();
     }
 
-    public int getLevelCost(int currentLevel, int amount) {
+    public int getLevelAmount(int currentLevel, int xp, boolean creative) {
+        int cost = 0;
+        int amount = 0;
+        while (!this.isMax(currentLevel + amount + 1)) {
+            int nextCost = cost + this.nextLevelCost(currentLevel + amount + 1);
+
+            if (!creative && nextCost > xp) {
+                break;
+            }
+
+            cost = nextCost;
+            amount++;
+        }
+        return cost;
+    }
+
+     public int getLevelCost(int currentLevel, int amount) {
         int cost = 0;
 
         for (int i = 0; i < amount; i++) {
@@ -51,13 +67,13 @@ public class Skillset {
         return cost;
     }
 
-    public int nextLevelCost(int level) {
+    protected int nextLevelCost(int level) {
         // Formula for calculating the required xp/level for the next level.
         return isMax(level) ? 0 : ((level * level) / (getMaxLevel() + 2)) + 2;
     }
 
     public String getLevelDescription(int level) {
-        return isMax(level) ? "Congrats, you have reached the max level!" : levels.get(level).getDescription();
+        return isMax(level) ? "Congrats, you have reached the max level!" : levels.containsKey(level) ? levels.get(level).getDescription() : "Level " + level;
     }
 
     @Override

@@ -11,18 +11,23 @@ import org.apache.commons.compress.utils.Lists;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Stream;
 
 public class SkillConvertor {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().serializeNulls().create();
+
     public static Skillset convertSkill(JsonObject jsonObject) {
         Identifier id = new Identifier(jsonObject.get("id").getAsString());
         @Nullable
         String name = jsonObject.has("name") ? jsonObject.get("name").getAsString() : null;
         @Nullable
         String description = jsonObject.has("description") ? jsonObject.get("description").getAsString() : null;
-        ArrayList<SkillLevel> levels = getLevels(jsonObject, id);
+        Map<Integer, SkillLevel> levelsUnsorted = new HashMap<>();
+        getLevels(jsonObject, id).forEach(skillLevel -> levelsUnsorted.put(skillLevel.level, skillLevel));
 
-        return new Skillset(id, name, description, levels);
+        return new Skillset(id, name, description, levelsUnsorted);
     }
 
     private static ArrayList<SkillLevel> getLevels(JsonObject jsonObject, Identifier skillId) {

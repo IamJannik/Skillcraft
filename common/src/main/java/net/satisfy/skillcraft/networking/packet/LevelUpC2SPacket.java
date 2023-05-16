@@ -8,7 +8,7 @@ import net.minecraft.util.Formatting;
 import net.satisfy.skillcraft.skill.SkillData;
 import net.satisfy.skillcraft.util.IEntityDataSaver;
 
-public class LevelC2SPacket implements NetworkManager.NetworkReceiver {
+public class LevelUpC2SPacket implements NetworkManager.NetworkReceiver {
     @Override
     public void receive(PacketByteBuf buf, NetworkManager.PacketContext context) {
         PlayerEntity player = context.getPlayer();

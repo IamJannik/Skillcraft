@@ -1,4 +1,4 @@
-package net.satisfy.skillcraft.json;
+package net.satisfy.skillcraft.util;
 
 import com.google.gson.JsonObject;
 

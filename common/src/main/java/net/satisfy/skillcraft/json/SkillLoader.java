@@ -9,31 +9,27 @@ import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.profiler.Profiler;
 import net.satisfy.skillcraft.Skillcraft;
+import net.satisfy.skillcraft.skill.SkillLevel;
 import net.satisfy.skillcraft.skill.Skillset;
+import net.satisfy.skillcraft.util.SkillComparator;
 import org.apache.commons.compress.utils.Lists;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import java.util.stream.Stream;
 
 public class SkillLoader implements ResourceReloader {
     public static Map<Identifier, Skillset> REGISTRY_SKILLS = new HashMap<>();
     private static final String SKILL_PATH = "skills";
 
-    public SkillLoader() {
-    }
-
     @Override
     public CompletableFuture<Void> reload(Synchronizer synchronizer, ResourceManager manager, Profiler prepareProfiler, Profiler applyProfiler, Executor prepareExecutor, Executor applyExecutor) {
-        System.out.println(REGISTRY_SKILLS);
         List<CompletableFuture<Skillset>> completableFutures = this.buildSkillsets(manager, prepareExecutor);
         CompletableFuture<Void> completableFuture = CompletableFuture.allOf(completableFutures.toArray(CompletableFuture[]::new));
         Objects.requireNonNull(synchronizer);
         return completableFuture.thenCompose(synchronizer::whenPrepared).thenAcceptAsync(
-                (void_) -> completableFutures.forEach((completableFutureSkillset) -> completableFutures.stream().map(CompletableFuture::join).forEach(skillset -> REGISTRY_SKILLS.put(skillset.getId(), skillset))), applyExecutor);
+                void_ -> completableFutures.forEach((completableFutureSkillset) -> completableFutures.stream().map(CompletableFuture::join).forEach(skillset -> REGISTRY_SKILLS.put(skillset.getId(), skillset))), applyExecutor);
     }
 
     private List<CompletableFuture<Skillset>> buildSkillsets(ResourceManager resourceManager, Executor prepareExecutor) {

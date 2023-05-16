@@ -3,6 +3,7 @@ package net.satisfy.skillcraft.json;
 import com.google.gson.*;
 import net.minecraft.resource.Resource;
 import net.satisfy.skillcraft.skill.Skillset;
+import net.satisfy.skillcraft.util.SkillJsonComperator;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;

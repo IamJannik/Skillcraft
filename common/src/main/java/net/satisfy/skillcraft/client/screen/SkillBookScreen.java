@@ -8,7 +8,9 @@ import net.minecraft.util.Identifier;
 import net.satisfy.skillcraft.SkillcraftIdentifier;
 import net.satisfy.skillcraft.json.SkillLoader;
 import net.satisfy.skillcraft.skill.Skillset;
+import net.satisfy.skillcraft.util.SkillComparator;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,7 +48,7 @@ public class SkillBookScreen extends Screen {
     private void createSkillButtons(Map<Identifier, Skillset> skillsets) {
         int skill = 0;
         for (int i = 0; i < 10; i++) {
-        for (Identifier identifier : skillsets.keySet()) {
+        for (Identifier identifier : skillsets.keySet().stream().sorted(new SkillComparator()).toList()) {
             SkillButton skillButton = new SkillButton(
                     x + 26 + (SkillButton.SKILL_BUTTON_WIDTH + 4) * (skill % 3),
                     y + 46 + (SkillButton.SKILL_BUTTON_HEIGHT + 4) * (skill / 3),

@@ -70,28 +70,38 @@ public class SkillLevelWidget extends DrawableHelper implements Drawable, Elemen
     }
 
     private void createButtons() {
-        levelUpButtons.add(new LevelButton(this.x + 31, y + 125, levelButton -> levelUP(1), Text.of("+1")));
-        levelUpButtons.add(new LevelButton(this.x + 75, y + 125,levelButton -> levelUP(-1), Text.of("+MAX")));//TODO MAX
+        levelUpButtons.add(new LevelButton(this.x + 31, y + 125, levelButton -> levelUp(1), Text.of("+1")));
+        levelUpButtons.add(new LevelButton(this.x + 75, y + 125,levelButton -> levelUpMax(), Text.of("+MAX")));//TODO MAX
     }
 
-    private void levelUP(int amount) {
+    private void levelUp(int amount) {
+        if (amount <= 0) {
+            return;
+        }
         boolean creative = player.isCreative();
-        int level = persistentData.getInt(skillId.toString());
-        int cost = skillset.getLevelCost(level, amount);
+        int currentLevel = persistentData.getInt(skillId.toString());
+        int cost = skillset.getLevelCost(currentLevel, amount);
 
-        if (creative || cost <= player.experienceLevel) {
+        if (!skillset.isMax(currentLevel + amount) && (creative || cost <= player.experienceLevel)) {
             if (!creative) {
                 player.addExperienceLevels(-cost);
             }
 
-            reloadText(level + amount);
+            reloadText(currentLevel + amount);
 
             PacketByteBuf buf = createPacketBuf();
             buf.writeString(skillId.toString());
             buf.writeInt(amount);
-            buf.writeInt(cost);
-            NetworkManager.sendToServer(SkillcraftNetworking.SKILL_LEVEL_ID, buf);
+            buf.writeInt(creative ? 0 : cost);
+            NetworkManager.sendToServer(SkillcraftNetworking.SKILL_LEVEL_UP_ID, buf);
         }
+    }
+
+    private void levelUpMax() {
+        int currentLevel = persistentData.getInt(skillId.toString());
+        int amount = skillset.getLevelAmount(currentLevel, player.experienceLevel, player.isCreative());
+
+        levelUp(amount);
     }
 
     @Override

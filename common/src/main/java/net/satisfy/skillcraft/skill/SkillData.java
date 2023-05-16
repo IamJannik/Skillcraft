@@ -31,6 +31,6 @@ public class SkillData {
         PacketByteBuf buf = SkillcraftUtil.createPacketBuf();
         buf.writeString(skill);
         buf.writeInt(level);
-        NetworkManager.sendToPlayer(player, SkillcraftNetworking.SKILL_LEVEL_SYNC_ID, buf);
+        NetworkManager.sendToPlayer(player, SkillcraftNetworking.SKILL_SYNC_ID, buf);
     }
 }
