@@ -53,7 +53,7 @@ public class Skillset {
             cost = nextCost;
             amount++;
         }
-        return cost;
+        return amount;
     }
 
      public int getLevelCost(int currentLevel, int amount) {

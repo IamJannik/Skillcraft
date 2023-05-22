@@ -1,11 +1,13 @@
 package net.satisfy.skillcraft.client.screen;
 
 import com.google.common.collect.Lists;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import net.satisfy.skillcraft.SkillcraftIdentifier;
+import net.satisfy.skillcraft.client.SkillcraftClient;
 import net.satisfy.skillcraft.json.SkillLoader;
 import net.satisfy.skillcraft.skill.Skillset;
 import net.satisfy.skillcraft.util.SkillComparator;
@@ -13,21 +15,19 @@ import net.satisfy.skillcraft.util.SkillComparator;
 import java.util.List;
 import java.util.Map;
 
+@Environment(EnvType.CLIENT)
 public class SkillBookScreen extends Screen {
-
-    private SkillScrollWidget leftSide;
-    private SkillLevelWidget rightSide;
-    private final List<SkillButton> skillButtons = Lists.newArrayList();
-
     protected int x;
     protected int y;
     public final static int WIDTH = 294;
     public final static int HEIGHT = 147;
     private Identifier currentSkill;
+    private SkillLevelWidget skillLevelsWidget;
+    private final List<SkillButton> skillButtons = Lists.newArrayList();
 
     public SkillBookScreen() {
         super(Text.literal("SKILLS").formatted(Formatting.GOLD));
-        currentSkill = new SkillcraftIdentifier("combat");
+        currentSkill = SkillcraftClient.lastBookSkill;
     }
 
     @Override
@@ -37,11 +37,12 @@ public class SkillBookScreen extends Screen {
         this.y = (this.height - HEIGHT) / 2;
 
         createSkillButtons(SkillLoader.REGISTRY_SKILLS);
-        leftSide = new SkillScrollWidget(this.x, this.y, this.skillButtons);
-        reloadSkill();
+        SkillScrollWidget skillsWidget = new SkillScrollWidget(this.x, this.y, this.skillButtons);
+        skillLevelsWidget = new SkillLevelWidget(this.x + WIDTH / 2, this.y, currentSkill, textRenderer);
+        reloadSkill(currentSkill);
 
-        this.addDrawableChild(leftSide);
-        this.addDrawableChild(rightSide);
+        this.addDrawableChild(skillsWidget);
+        this.addDrawableChild(skillLevelsWidget);
     }
 
     private void createSkillButtons(Map<Identifier, Skillset> skillsets) {
@@ -51,7 +52,7 @@ public class SkillBookScreen extends Screen {
             SkillButton skillButton = new SkillButton(
                     x + 26 + (SkillButton.SKILL_BUTTON_WIDTH + 4) * (skill % 3),
                     y + 46 + (SkillButton.SKILL_BUTTON_HEIGHT + 4) * (skill / 3),
-                    (button) -> openSkill(identifier),
+                    (button) -> reloadSkill(identifier),
                     Text.literal(skillsets.get(identifier).getName())
             );
             this.skillButtons.add(skillButton);
@@ -60,14 +61,10 @@ public class SkillBookScreen extends Screen {
         }
     }
 
-    private void openSkill(Identifier identifier) {
-        this.currentSkill = identifier;
-        reloadSkill();
-    }
-
-    private void reloadSkill() {
-        this.remove(rightSide);
-        rightSide = new SkillLevelWidget(this.x + WIDTH / 2, this.y, currentSkill, this.textRenderer); //TODO make SkillLevelWidget dynamic for each skill ( not every time a new one)
-        this.addDrawableChild(rightSide);
+    private void reloadSkill(Identifier skill) {
+        this.currentSkill = skill;
+        skillLevelsWidget.setSkillset(skill);
+        SkillcraftClient.lastBookSkill = currentSkill;
+        skillLevelsWidget.reloadText();
     }
 }

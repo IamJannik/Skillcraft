@@ -9,6 +9,7 @@ import net.satisfy.skillcraft.util.IEntityDataSaver;
 import net.satisfy.skillcraft.util.SkillcraftUtil;
 
 public class SkillData {
+
     public static int grantSkill(IEntityDataSaver player, String skill, int amount) {
         NbtCompound nbt = player.getPersistentData();
         int level = nbt.getInt(skill);

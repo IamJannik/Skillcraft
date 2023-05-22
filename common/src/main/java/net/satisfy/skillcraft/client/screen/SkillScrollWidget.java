@@ -1,6 +1,8 @@
 package net.satisfy.skillcraft.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.render.*;
@@ -12,6 +14,7 @@ import net.satisfy.skillcraft.SkillcraftIdentifier;
 
 import java.util.List;
 
+@Environment(EnvType.CLIENT)
 public class SkillScrollWidget extends ClickableWidget {
     private final List<SkillButton> skillButtons;
     private double scrollY;

@@ -1,11 +1,14 @@
 package net.satisfy.skillcraft.json;
 
 import com.google.gson.*;
+import net.minecraft.block.Block;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.satisfy.skillcraft.skill.SkillLevel;
 import net.satisfy.skillcraft.skill.Skillset;
+import net.satisfy.skillcraft.util.ISkillBlock;
 import net.satisfy.skillcraft.util.ISkillItem;
 import org.apache.commons.compress.utils.Lists;
 import org.jetbrains.annotations.Nullable;
@@ -40,9 +43,10 @@ public class SkillConvertor {
             @Nullable
             String levelDescription = levelJson.has("description") ? levelJson.get("description").getAsString() : null;
             ArrayList<Item> unlockItems = getUnlockItems(levelJson, skillId, level);
+            ArrayList<Block> unlockBlocks = getUnlockBlocks(unlockItems, skillId, level);
             @Nullable
             Item levelReward = levelJson.has("reward") ? JsonHelper.getItem(levelJson, "reward") : null;
-            levels.add(new SkillLevel(level, levelName, levelDescription, unlockItems, levelReward));
+            levels.add(new SkillLevel(level, levelName, levelDescription, unlockItems, unlockBlocks, levelReward));
         }
         return levels;
     }
@@ -62,6 +66,26 @@ public class SkillConvertor {
         if (unlockItem instanceof ISkillItem skillItem) {
             skillItem.setSkillKey(skillId);
             skillItem.setRequiredLevel(level);
+        }
+    }
+
+    private static ArrayList<Block> getUnlockBlocks(ArrayList<Item> unlockItems, Identifier skillId, int level) {
+        ArrayList<Block> unlockBlocks = Lists.newArrayList();
+        for (Item unlockItem : unlockItems) {
+            if (unlockItem instanceof BlockItem blockItem) {
+                Block block = blockItem.getBlock();
+                unlockBlocks.add(block);
+                safeSkillOnBlock(block, skillId, level);
+            }
+        }
+        return Lists.newArrayList(); //TODO
+    }
+
+    private static void safeSkillOnBlock(Block unlockBlock, Identifier skillId, int level) {
+        System.out.println("SAFE");
+        if (unlockBlock instanceof ISkillBlock skillBLock) {
+            skillBLock.setSkillKey(skillId);
+            skillBLock.setRequiredLevel(level);
         }
     }
 }

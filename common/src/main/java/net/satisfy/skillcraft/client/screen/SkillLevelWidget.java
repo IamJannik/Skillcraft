@@ -2,6 +2,8 @@ package net.satisfy.skillcraft.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.architectury.networking.NetworkManager;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.Drawable;
@@ -28,9 +30,9 @@ import java.util.List;
 
 import static net.satisfy.skillcraft.util.SkillcraftUtil.createPacketBuf;
 
+@Environment(EnvType.CLIENT)
 public class SkillLevelWidget extends DrawableHelper implements Drawable, Element, Selectable {
-    private final Identifier skillId;
-    private final Skillset skillset;
+    private Skillset skillset;
     private final TextRenderer textRenderer;
     private final PlayerEntity player;
     private final TextFieldWidget currentLevel;
@@ -46,7 +48,6 @@ public class SkillLevelWidget extends DrawableHelper implements Drawable, Elemen
     public SkillLevelWidget(int x, int y, Identifier skillId, TextRenderer textRenderer) {
         this.x = x;
         this.y = y;
-        this.skillId = skillId;
         skillset = SkillLoader.REGISTRY_SKILLS.get(skillId);
         this.textRenderer = textRenderer;
 
@@ -58,50 +59,19 @@ public class SkillLevelWidget extends DrawableHelper implements Drawable, Elemen
 
         assert MinecraftClient.getInstance().player != null;
         this.player = MinecraftClient.getInstance().player;
-        this.persistentData = ((IEntityDataSaver) this.player).getPersistentData(); //TODO when join sync
+        this.persistentData = ((IEntityDataSaver) this.player).getPersistentData();
 
-        reloadText(persistentData.getInt(this.skillId.toString()));
+        reloadText(((IEntityDataSaver)player).getPersistentData().getInt(skillset.getId().toString()));
         createButtons();
     }
 
-    private void reloadText(int level) {
-        currentLevel.setText(skillset.getLevelDescription(level));
-        nextLevel.setText(skillset.getLevelDescription(level + 1));
+    public void setSkillset(Identifier skillId) {
+        this.skillset = SkillLoader.REGISTRY_SKILLS.get(skillId);
     }
 
     private void createButtons() {
         levelUpButtons.add(new LevelButton(this.x + 31, y + 125, levelButton -> levelUp(1), Text.of("+1")));
         levelUpButtons.add(new LevelButton(this.x + 75, y + 125,levelButton -> levelUpMax(), Text.of("+MAX")));//TODO MAX
-    }
-
-    private void levelUp(int amount) {
-        if (amount <= 0) {
-            return;
-        }
-        boolean creative = player.isCreative();
-        int currentLevel = persistentData.getInt(skillId.toString());
-        int cost = skillset.getLevelCost(currentLevel, amount);
-
-        if (!skillset.isMax(currentLevel + amount) && (creative || cost <= player.experienceLevel)) {
-            if (!creative) {
-                player.addExperienceLevels(-cost);
-            }
-
-            reloadText(currentLevel + amount);
-
-            PacketByteBuf buf = createPacketBuf();
-            buf.writeString(skillId.toString());
-            buf.writeInt(amount);
-            buf.writeInt(creative ? 0 : cost);
-            NetworkManager.sendToServer(SkillcraftNetworking.SKILL_LEVEL_UP_ID, buf);
-        }
-    }
-
-    private void levelUpMax() {
-        int currentLevel = persistentData.getInt(skillId.toString());
-        int amount = skillset.getLevelAmount(currentLevel, player.experienceLevel, player.isCreative());
-
-        levelUp(amount);
     }
 
     @Override
@@ -110,7 +80,6 @@ public class SkillLevelWidget extends DrawableHelper implements Drawable, Elemen
         drawCenteredText(matrices, textRenderer, skillset.getName(), x + WIDTH / 2, y + 28, 10525571);
         currentLevel.render(matrices, mouseX, mouseY, delta);
         nextLevel.render(matrices, mouseX, mouseY, delta);
-
 
         for (LevelButton levelButton : levelUpButtons) {
             levelButton.render(matrices, mouseX, mouseY, delta);
@@ -133,6 +102,66 @@ public class SkillLevelWidget extends DrawableHelper implements Drawable, Elemen
             }
         }
         return false;
+    }
+
+    public void reloadText() {
+        reloadText(persistentData.getInt(skillset.getId().toString()));
+    }
+
+    public void reloadText(int level) {
+        currentLevel.setText(skillset.getLevelDescription(level));
+        nextLevel.setText(skillset.getLevelDescription(level + 1));
+    }
+
+    private void levelUp(int amount) {
+        if (amount <= 0) {
+            return;
+        }
+        boolean creative = player.isCreative();
+        int currentLevel = persistentData.getInt(skillset.getId().toString());
+        int cost = skillset.getLevelCost(currentLevel, amount);
+
+        if (!skillset.isMax(currentLevel + amount) && (creative || cost <= player.experienceLevel)) {
+            if (!creative) {
+                player.addExperienceLevels(-cost);
+            }
+
+            PacketByteBuf buf = createPacketBuf();
+            buf.writeString(skillset.getId().toString());
+            buf.writeInt(amount);
+            buf.writeInt(creative ? 0 : cost);
+            NetworkManager.sendToServer(SkillcraftNetworking.SKILL_LEVEL_UP_ID, buf);
+
+            reloadText(currentLevel + amount);
+        }
+    }
+
+    private void levelUpMax() {
+        int currentLevel = persistentData.getInt(skillset.getId().toString());
+        int amount = skillset.getLevelAmount(currentLevel, player.experienceLevel, player.isCreative());
+
+        levelUp(amount);
+    }
+
+    private String formatText(String levelDescription, int lineLength) {
+        StringBuilder formattedText = new StringBuilder();
+        int currentLineLength = 0;
+
+        for (char c : levelDescription.toCharArray()) {
+            if (currentLineLength >= lineLength && c != ' ') {
+                formattedText.append("\n");
+                currentLineLength = 0;
+            }
+
+            formattedText.append(c);
+            currentLineLength++;
+
+            if (c == '\n') {
+                currentLineLength = 0;
+            }
+        }
+
+        return formattedText.toString();
     }
 
     @Override

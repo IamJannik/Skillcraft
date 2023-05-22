@@ -25,7 +25,8 @@
       "name": "Forklift driver",
       "description": "You can build with stone.",
       "unlock": [
-        "minecraft:cobblestone"
+        "minecraft:cobblestone",
+        "minecraft:chest"
       ],
       "reward": "minecraft:stone_pickaxe"
     }
