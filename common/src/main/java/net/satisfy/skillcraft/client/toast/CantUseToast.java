@@ -21,8 +21,8 @@ import java.util.Objects;
 
 public class CantUseToast implements Toast {
     private static final Identifier TEXTURE = new Identifier("textures/gui/toasts.png");
-    private static final int titleColor = 9830400;
-    private static final int textColor = 14686475;
+    private static final int titleColor = 14686475;
+    private static final int textColor = 9830400;
     @NotNull
     private final Skillset skill;
     private final Item item;
@@ -69,5 +69,14 @@ public class CantUseToast implements Toast {
 
         manager.getClient().getItemRenderer().renderInGui(item.getDefaultStack(), 8, 8);
         return startTime >= 5000L ? Visibility.HIDE : Visibility.SHOW;
+    }
+
+    public void reload() {
+        this.soundPlayed = false;
+    }
+
+    @Override
+    public Object getType() {
+        return this;
     }
 }

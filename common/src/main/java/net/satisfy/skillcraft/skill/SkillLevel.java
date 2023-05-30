@@ -37,6 +37,7 @@ public class SkillLevel {
     public ArrayList<Item> getUnlockItems() {
         return this.unlockItems;
     }
+
     public ArrayList<Block> getUnlockBlocks() {
         return this.unlockBlocks;
     }

@@ -35,6 +35,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
     @Inject(method = "getBlockBreakingSpeed", at = @At("HEAD"), cancellable = true)
     public void mineSkillSpeed(BlockState blockstate, CallbackInfoReturnable<Float> cir) {
+        System.out.println("Block Breaking");
         Block block = blockstate.getBlock();
         if (block instanceof ISkillBlock skillBlock) {
             if (!skillBlock.hasRequiredLevel(MinecraftClient.getInstance().player, block)) {

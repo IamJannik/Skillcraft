@@ -19,6 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class ItemStackMixin {
     @Inject(method = "use",  at = @At("HEAD"), cancellable = true)
     public void useLevel(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
+        System.out.println("use");
         ItemStack itemStack = user.getStackInHand(hand);
         Item item = itemStack.getItem();
         if (item instanceof ISkillItem skillItem) {
@@ -30,6 +31,7 @@ public class ItemStackMixin {
 
     @Inject(method = "useOnBlock",  at = @At("HEAD"), cancellable = true)
     public void useOnBlockLevel(ItemUsageContext context, CallbackInfoReturnable<ActionResult> cir) {
+        System.out.println("useOnBlock");
         ItemStack itemStack = context.getStack();
         Item item = itemStack.getItem();
         if (item instanceof ISkillItem skillItem) {
