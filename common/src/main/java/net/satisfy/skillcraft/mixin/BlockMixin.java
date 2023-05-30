@@ -17,7 +17,7 @@ public class BlockMixin implements ISkillBlock {
 
     @Override
     public boolean hasRequiredLevel(PlayerEntity player, Block block) {
-        if (skillKey == null || requiredLevel == 0) return  true;
+        if (skillKey == null || requiredLevel == 0 || player.isCreative()) return  true;
         NbtCompound nbtCompound = ((IEntityDataSaver)player).getPersistentData();
         boolean enough = nbtCompound.getInt(skillKey.toString()) >= requiredLevel;
         player.sendMessage(enough ?
