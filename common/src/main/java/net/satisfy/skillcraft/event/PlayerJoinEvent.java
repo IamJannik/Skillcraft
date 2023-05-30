@@ -10,7 +10,6 @@ import static net.satisfy.skillcraft.util.SkillcraftUtil.createPacketBuf;
 public class PlayerJoinEvent implements ClientPlayerEvent.ClientPlayerJoin {
     @Override
     public void join(ClientPlayerEntity player) {
-        System.out.println("join");
         NetworkManager.sendToServer(SkillcraftNetworking.SKILL_SYNC_REQUEST_ID, createPacketBuf());
     }
 }

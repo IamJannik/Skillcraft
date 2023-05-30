@@ -32,6 +32,10 @@ public class Skillset {
         return description == null ? "Add a description to the Json File." : description;
     }
 
+    public Optional<SkillLevel> getSkillLevel(int level) {
+        return Optional.ofNullable(levels.get(level));
+    }
+
     public int getMaxLevel() {
         return levels.keySet().stream().max(Comparator.comparingInt(x -> x)).orElse(0);
     }

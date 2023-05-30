@@ -12,7 +12,6 @@ public class SkillLevel {
     private final String name;
     @Nullable
     private final String description;
-
     private final ArrayList<Item> unlockItems;
     private final ArrayList<Block> unlockBlocks;
     @Nullable

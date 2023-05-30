@@ -4,13 +4,13 @@
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
   "client": [
-
   ],
   "mixins": [
-    "ItemMixin",
     "BlockMixin",
-    "ItemStackMixin",
     "BlockStateMixin",
+    "ItemMixin",
+    "ItemStackMixin",
+    "PlayerEntityMixin",
     "SkillcraftEntityDataSaverMixin"
   ],
   "injectors": {

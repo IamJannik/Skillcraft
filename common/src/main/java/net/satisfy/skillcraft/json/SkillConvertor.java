@@ -82,7 +82,6 @@ public class SkillConvertor {
     }
 
     private static void safeSkillOnBlock(Block unlockBlock, Identifier skillId, int level) {
-        System.out.println("SAFE");
         if (unlockBlock instanceof ISkillBlock skillBLock) {
             skillBLock.setSkillKey(skillId);
             skillBLock.setRequiredLevel(level);

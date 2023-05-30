@@ -47,7 +47,7 @@ public class SkillBookScreen extends Screen {
 
     private void createSkillButtons(Map<Identifier, Skillset> skillsets) {
         int skill = 0;
-        for (int i = 0; i < 10; i++) {
+        //for (int i = 0; i < 10; i++) {
         for (Identifier identifier : skillsets.keySet().stream().sorted(new SkillComparator()).toList()) {
             SkillButton skillButton = new SkillButton(
                     x + 26 + (SkillButton.SKILL_BUTTON_WIDTH + 4) * (skill % 3),
@@ -58,13 +58,13 @@ public class SkillBookScreen extends Screen {
             this.skillButtons.add(skillButton);
             skill++;
         }
-        }
+        //}
     }
 
     private void reloadSkill(Identifier skill) {
         this.currentSkill = skill;
         skillLevelsWidget.setSkillset(skill);
         SkillcraftClient.lastBookSkill = currentSkill;
-        skillLevelsWidget.reloadText();
+        skillLevelsWidget.reloadLevel();
     }
 }

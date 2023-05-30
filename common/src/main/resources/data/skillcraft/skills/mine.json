@@ -1,0 +1,30 @@
+{
+  "replace": false,
+  "weight": 0,
+  "id": "skillcraft:mine",
+  "name": "MINE",
+  "levels": [
+    {
+      "level": 0,
+      "name": "Noob",
+      "description": "You can do nothing.",
+      "unlock": [
+      ]
+    },
+    {
+      "level": 1,
+      "name": "Trainee",
+      "description": "You can build with wood.",
+      "unlock": [
+      ]
+    },
+    {
+      "level": 5,
+      "name": "Forklift driver",
+      "description": "You can build with stone.",
+      "unlock": [
+        "minecraft:stone_pickaxe"
+      ]
+    }
+  ]
+}
