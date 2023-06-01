@@ -11,12 +11,10 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.satisfy.skillcraft.json.SkillLoader;
 import net.satisfy.skillcraft.skill.SkillData;
-import net.satisfy.skillcraft.skill.SkillLevel;
 import net.satisfy.skillcraft.skill.Skillset;
 import net.satisfy.skillcraft.util.IEntityDataSaver;
 
 import java.util.List;
-import java.util.Optional;
 
 public class LevelUpC2SPacket implements NetworkManager.NetworkReceiver {
     @Override
