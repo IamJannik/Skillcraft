@@ -36,7 +36,7 @@ public class CantUseToast implements Toast {
     }
 
     @Override
-    public Visibility draw(MatrixStack matrices, ToastManager manager, long startTime) { //TODO variables renmane
+    public Visibility draw(MatrixStack matrices, ToastManager manager, long startTime) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, TEXTURE);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -47,16 +47,16 @@ public class CantUseToast implements Toast {
             manager.getClient().textRenderer.draw(matrices, lines.get(0), 30.0F, 18.0F, textColor);
         } else {
             if (startTime < 1500L) {
-                int k = MathHelper.floor(MathHelper.clamp((float)(1500L - startTime) / 300.0F, 0.0F, 1.0F) * 255.0F) << 24 | 67108864;
-                manager.getClient().textRenderer.draw(matrices, item.getName(), 30.0F, 11.0F, titleColor | k);
+                int color = MathHelper.floor(MathHelper.clamp((float)(1500L - startTime) / 300.0F, 0.0F, 1.0F) * 255.0F) << 24 | 67108864;
+                manager.getClient().textRenderer.draw(matrices, item.getName(), 30.0F, 11.0F, titleColor | color);
             } else {
-                int k = MathHelper.floor(MathHelper.clamp((float)(startTime - 1500L) / 300.0F, 0.0F, 1.0F) * 252.0F) << 24 | 67108864;
+                int color = MathHelper.floor(MathHelper.clamp((float)(startTime - 1500L) / 300.0F, 0.0F, 1.0F) * 252.0F) << 24 | 67108864;
                 int halfHeight = this.getHeight() / 2;
                 int y = halfHeight - lines.size() * 9 / 2;
 
                 for (Iterator<OrderedText> lineIterator = lines.iterator(); lineIterator.hasNext(); y += 9) {
                     OrderedText line = lineIterator.next();
-                    manager.getClient().textRenderer.draw(matrices, line, 30.0F, (float) y, textColor | k);
+                    manager.getClient().textRenderer.draw(matrices, line, 30.0F, (float) y, textColor | color);
                     Objects.requireNonNull(manager.getClient().textRenderer);
                 }
             }

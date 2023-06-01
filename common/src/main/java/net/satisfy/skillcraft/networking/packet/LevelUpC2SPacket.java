@@ -12,6 +12,7 @@ import net.minecraft.util.Identifier;
 import net.satisfy.skillcraft.json.SkillLoader;
 import net.satisfy.skillcraft.skill.SkillData;
 import net.satisfy.skillcraft.skill.SkillLevel;
+import net.satisfy.skillcraft.skill.Skillset;
 import net.satisfy.skillcraft.util.IEntityDataSaver;
 
 import java.util.List;
@@ -30,13 +31,11 @@ public class LevelUpC2SPacket implements NetworkManager.NetworkReceiver {
         player.addExperienceLevels(-cost);
 
         Identifier skillIdentifier = new Identifier(skill);
-        Optional<SkillLevel> optionalLevel = SkillLoader.REGISTRY_SKILLS.get(skillIdentifier).getSkillLevel(level);//TODO can use Toast
-        if (optionalLevel.isPresent()) {
-            List<Item> items = optionalLevel.get().getUnlockItems();
-            List<Block> blocks = optionalLevel.get().getUnlockBlocks();
-        }
+        Skillset skillset = SkillLoader.REGISTRY_SKILLS.get(skillIdentifier);//TODO can now use Toast machen
+        player.sendMessage(Text.literal("Level: " + level).formatted(Formatting.GOLD));
+        List<Item> items = skillset.getUnlockItems(level);
+        List<Block> blocks = skillset.getUnlockBlocks(level);
 
-        player.sendMessage(Text.literal("Level: " + level).formatted(Formatting.GOLD)); //TODO schön anzeigen
         player.playSound(SoundEvents.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
     }
 }

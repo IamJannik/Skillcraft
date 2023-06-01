@@ -22,7 +22,7 @@ public class SkillBookScreen extends Screen {
     public final static int WIDTH = 294;
     public final static int HEIGHT = 147;
     private Identifier currentSkill;
-    private SkillLevelWidget skillLevelsWidget;
+    private LevelUpWidget skillLevelsWidget;
     private final List<SkillButton> skillButtons = Lists.newArrayList();
 
     public SkillBookScreen() {
@@ -37,8 +37,8 @@ public class SkillBookScreen extends Screen {
         this.y = (this.height - HEIGHT) / 2;
 
         createSkillButtons(SkillLoader.REGISTRY_SKILLS);
-        SkillScrollWidget skillsWidget = new SkillScrollWidget(this.x, this.y, this.skillButtons);
-        skillLevelsWidget = new SkillLevelWidget(this.x + WIDTH / 2, this.y, currentSkill, textRenderer);
+        SkillsScrollWidget skillsWidget = new SkillsScrollWidget(this.x, this.y, this.skillButtons);
+        skillLevelsWidget = new LevelUpWidget(this.x + WIDTH / 2, this.y, currentSkill, textRenderer);
         reloadSkill(currentSkill);
 
         this.addDrawableChild(skillsWidget);
@@ -47,7 +47,6 @@ public class SkillBookScreen extends Screen {
 
     private void createSkillButtons(Map<Identifier, Skillset> skillsets) {
         int skill = 0;
-        //for (int i = 0; i < 10; i++) {
         for (Identifier identifier : skillsets.keySet().stream().sorted(new SkillComparator()).toList()) {
             SkillButton skillButton = new SkillButton(
                     x + 26 + (SkillButton.SKILL_BUTTON_WIDTH + 4) * (skill % 3),
@@ -58,7 +57,6 @@ public class SkillBookScreen extends Screen {
             this.skillButtons.add(skillButton);
             skill++;
         }
-        //}
     }
 
     private void reloadSkill(Identifier skill) {

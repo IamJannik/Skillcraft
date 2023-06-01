@@ -1,6 +1,9 @@
 package net.satisfy.skillcraft.skill;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
+import org.apache.commons.compress.utils.Lists;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -30,10 +33,6 @@ public class Skillset {
 
     public String getDescription() {
         return description == null ? "Add a description to the Json File." : description;
-    }
-
-    public Optional<SkillLevel> getSkillLevel(int level) {
-        return Optional.ofNullable(levels.get(level));
     }
 
     public int getMaxLevel() {
@@ -75,8 +74,20 @@ public class Skillset {
         return isMax(level) ? 0 : ((level * level) / (getMaxLevel() + 2)) + 2;
     }
 
+    public String getLevelName(int level) {
+        return isMax(level) ? "Max Level" : levels.containsKey(level) ? levels.get(level).getName() : "Level " + level;
+    }
+
     public String getLevelDescription(int level) {
-        return isMax(level) ? "Congrats, you have reached the max level!" : levels.containsKey(level) ? levels.get(level).getDescription() : "Level " + level;
+        return isMax(level) ? "Congrats, you have reached the max level!" : levels.containsKey(level) ? levels.get(level).getDescription() : "";
+    }
+
+    public List<Item> getUnlockItems(int level) {
+        return levels.containsKey(level) ? levels.get(level).getUnlockItems() : Lists.newArrayList();
+    }
+
+    public List<Block> getUnlockBlocks(int level) {
+        return levels.containsKey(level) ? levels.get(level).getUnlockBlocks() : Lists.newArrayList();
     }
 
     @Override

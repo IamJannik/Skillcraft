@@ -78,7 +78,7 @@ public class SkillConvertor {
                 safeSkillOnBlock(block, skillId, level);
             }
         }
-        return Lists.newArrayList(); //TODO
+        return unlockBlocks;
     }
 
     private static void safeSkillOnBlock(Block unlockBlock, Identifier skillId, int level) {
