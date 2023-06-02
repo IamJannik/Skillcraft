@@ -3,6 +3,7 @@
   "weight": 0,
   "id": "skillcraft:combat",
   "name": "COMBAT",
+  "icon": "minecraft:diamond_sword",
   "levels": [
     {
       "level": 0,

@@ -26,13 +26,15 @@ public class SkillConvertor {
         String name = jsonObject.has("name") ? jsonObject.get("name").getAsString() : null;
         @Nullable
         String description = jsonObject.has("description") ? jsonObject.get("description").getAsString() : null;
+        @Nullable
+        Item icon = jsonObject.has("icon") ? JsonHelper.asItem(jsonObject.get("icon"), jsonObject.get("icon").getAsString()) : null;
         Map<Integer, SkillLevel> levelsUnsorted = new HashMap<>();
         getLevels(jsonObject, id).forEach(skillLevel -> levelsUnsorted.put(skillLevel.level, skillLevel));
 
-        return new Skillset(id, name, description, levelsUnsorted);
+        return new Skillset(id, name, description, icon, levelsUnsorted);
     }
 
-    private static ArrayList<SkillLevel> getLevels(JsonObject jsonObject, Identifier skillId) {
+    public static ArrayList<SkillLevel> getLevels(JsonObject jsonObject, Identifier skillId) {
         ArrayList<SkillLevel> levels = Lists.newArrayList();
         JsonArray levelsJson = jsonObject.getAsJsonArray("levels");
         for (JsonElement jsonElement : levelsJson) {

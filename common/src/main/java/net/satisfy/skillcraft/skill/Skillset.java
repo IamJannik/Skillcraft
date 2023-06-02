@@ -1,7 +1,8 @@
 package net.satisfy.skillcraft.skill;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 import org.apache.commons.compress.utils.Lists;
 import org.jetbrains.annotations.Nullable;
@@ -14,12 +15,15 @@ public class Skillset {
     public final String name;
     @Nullable
     private final String description;
+    @Nullable
+    private final Item icon;
     private final Map<Integer, SkillLevel> levels;
 
-    public Skillset(Identifier id, @Nullable String name, @Nullable String description, Map<Integer, SkillLevel> levels) {
+    public Skillset(Identifier id, @Nullable String name, @Nullable String description, @Nullable Item icon, Map<Integer, SkillLevel> levels) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.icon = icon;
         this.levels = levels;
     }
 
@@ -33,6 +37,10 @@ public class Skillset {
 
     public String getDescription() {
         return description == null ? "Add a description to the Json File." : description;
+    }
+
+    public ItemStack getIcon() {
+        return icon == null ? Items.STONE_PICKAXE.getDefaultStack() : icon.getDefaultStack();
     }
 
     public int getMaxLevel() {
@@ -86,10 +94,6 @@ public class Skillset {
         return levels.containsKey(level) ? levels.get(level).getUnlockItems() : Lists.newArrayList();
     }
 
-    public List<Block> getUnlockBlocks(int level) {
-        return levels.containsKey(level) ? levels.get(level).getUnlockBlocks() : Lists.newArrayList();
-    }
-
     @Override
     public String toString() {
         return "Skillset: " + " ID: " + id + " / name: " + getName() +  ", levels: " + levels + ';';
@@ -106,4 +110,5 @@ public class Skillset {
     public int hashCode() {
         return Objects.hash(id, getName());
     }
+
 }

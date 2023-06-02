@@ -22,7 +22,7 @@ public class SkillBookScreen extends Screen {
     public final static int WIDTH = 294;
     public final static int HEIGHT = 147;
     private Identifier currentSkill;
-    private LevelUpWidget skillLevelsWidget;
+    private LevelWidget skillLevelsWidget;
     private final List<SkillButton> skillButtons = Lists.newArrayList();
 
     public SkillBookScreen() {
@@ -38,7 +38,7 @@ public class SkillBookScreen extends Screen {
 
         createSkillButtons(SkillLoader.REGISTRY_SKILLS);
         SkillsScrollWidget skillsWidget = new SkillsScrollWidget(this.x, this.y, this.skillButtons);
-        skillLevelsWidget = new LevelUpWidget(this.x + WIDTH / 2, this.y, currentSkill, textRenderer);
+        skillLevelsWidget = new LevelWidget(this.x + WIDTH / 2, this.y, currentSkill, textRenderer);
         reloadSkill(currentSkill);
 
         this.addDrawableChild(skillsWidget);
@@ -63,6 +63,6 @@ public class SkillBookScreen extends Screen {
         this.currentSkill = skill;
         skillLevelsWidget.setSkillset(skill);
         SkillcraftClient.lastBookSkill = currentSkill;
-        skillLevelsWidget.reloadLevel();
+        skillLevelsWidget.reload();
     }
 }

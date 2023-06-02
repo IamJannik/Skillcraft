@@ -1,20 +1,16 @@
 package net.satisfy.skillcraft.networking.packet;
 
 import dev.architectury.networking.NetworkManager;
-import net.minecraft.block.Block;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.toast.ToastManager;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.satisfy.skillcraft.client.toast.LevelUpToast;
 import net.satisfy.skillcraft.json.SkillLoader;
 import net.satisfy.skillcraft.skill.SkillData;
 import net.satisfy.skillcraft.skill.Skillset;
 import net.satisfy.skillcraft.util.IEntityDataSaver;
-
-import java.util.List;
 
 public class LevelUpC2SPacket implements NetworkManager.NetworkReceiver {
     @Override
@@ -28,12 +24,12 @@ public class LevelUpC2SPacket implements NetworkManager.NetworkReceiver {
 
         player.addExperienceLevels(-cost);
 
-        Identifier skillIdentifier = new Identifier(skill);
-        Skillset skillset = SkillLoader.REGISTRY_SKILLS.get(skillIdentifier);//TODO can now use Toast machen
-        player.sendMessage(Text.literal("Level: " + level).formatted(Formatting.GOLD));
-        List<Item> items = skillset.getUnlockItems(level);
-        List<Block> blocks = skillset.getUnlockBlocks(level);
+        ToastManager toastManager = MinecraftClient.getInstance().getToastManager();
+        Skillset skillset = SkillLoader.REGISTRY_SKILLS.get(new Identifier(skill));
+        for (int leveled = level - amount + 1; leveled <= level; leveled++) {
+            LevelUpToast levelUpToast = new LevelUpToast(skillset, leveled);
+            toastManager.add(levelUpToast);
+        }
 
-        player.playSound(SoundEvents.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
     }
 }

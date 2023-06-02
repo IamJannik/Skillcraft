@@ -7,7 +7,7 @@ license = "Insert License Here"
 modId = "skillcraft"
 version = "${version}"
 displayName = "Skillcraft"
-authors = "satisfy & BMJO"
+authors = ["BMJO", "satisfy"]
 description = '''
 This is an example description! Tell everyone what your mod is about!
 '''

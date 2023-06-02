@@ -38,7 +38,9 @@ public class SkillReader {
             List<JsonObject> replaceSkills = skillJsons.stream().filter(jsonObject -> jsonObject.get(REPLACE_KEY).getAsBoolean()).toList();
             return SkillConvertor.convertSkill(replaceSkills.get(0)); //returns Skill with REPLACE=true & highest WEIGHT
         }
-        //combine Skills
-        return SkillConvertor.convertSkill(skillJsons.get(0)); //TODO combine SKILLS
+        //TODO combine SKILLS
+        return SkillConvertor.convertSkill(skillJsons.get(0));
     }
+
+
 }

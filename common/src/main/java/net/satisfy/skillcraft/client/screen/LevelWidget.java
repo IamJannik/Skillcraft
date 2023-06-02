@@ -26,14 +26,13 @@ import net.satisfy.skillcraft.json.SkillLoader;
 import net.satisfy.skillcraft.networking.SkillcraftNetworking;
 import net.satisfy.skillcraft.skill.Skillset;
 import net.satisfy.skillcraft.util.IEntityDataSaver;
-import org.apache.commons.compress.utils.Lists;
 
 import java.util.List;
 
 import static net.satisfy.skillcraft.util.SkillcraftUtil.createPacketBuf;
 
 @Environment(EnvType.CLIENT)
-public class LevelUpWidget extends DrawableHelper implements Drawable, Element, Selectable {
+public class LevelWidget extends DrawableHelper implements Drawable, Element, Selectable {
     private final int x;
     private final int y;
     public final static int WIDTH = 147;
@@ -42,12 +41,13 @@ public class LevelUpWidget extends DrawableHelper implements Drawable, Element, 
     private Skillset skillset;
     private int currentLevel = 0;
     private final NbtCompound persistentData;
-    private final List<LevelButton> levelUpButtons = Lists.newArrayList();
+    private final LevelButton levelUpButton;
+    private final LevelButton levelUpMaxButton;
     private final PlayerEntity player;
     private final TextRenderer textRenderer;
 
 
-    public LevelUpWidget(int x, int y, Identifier skillId, TextRenderer textRenderer) {
+    public LevelWidget(int x, int y, Identifier skillId, TextRenderer textRenderer) {
         this.x = x;
         this.y = y;
         skillset = SkillLoader.REGISTRY_SKILLS.get(skillId);
@@ -58,43 +58,44 @@ public class LevelUpWidget extends DrawableHelper implements Drawable, Element, 
         this.persistentData = ((IEntityDataSaver) this.player).getPersistentData();
 
         reloadLevel(((IEntityDataSaver)player).getPersistentData().getInt(skillset.getId().toString()));
-        createButtons();
+
+        levelUpButton = new LevelButton(this.x + 31, y + 126, levelButton -> levelUp(1), Text.of("+1"));
+        levelUpMaxButton = new LevelButton(this.x + 75, y + 126,levelButton -> levelUp(maxLevelUp()), Text.of("+MAX"));
+        reloadButtons();
     }
 
     public void setSkillset(Identifier skillId) {
         this.skillset = SkillLoader.REGISTRY_SKILLS.get(skillId);
     }
 
-    private void createButtons() {
-        levelUpButtons.add(new LevelButton(this.x + 31, y + 125, levelButton -> levelUp(1), Text.of("+1")));
-        levelUpButtons.add(new LevelButton(this.x + 75, y + 125,levelButton -> levelUpMax(), Text.of("+MAX")));
-    }
-
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         renderBackground(matrices);
-        drawCenteredText(matrices, textRenderer, skillset.getName(), x + WIDTH / 2, y + 28, 10525571);
 
-        renderText(matrices, currentLevel, this.y + 46);
+        ItemRenderer itemRenderer = MinecraftClient.getInstance().getItemRenderer();
+        itemRenderer.renderGuiItemIcon(skillset.getIcon(), this.x + WIDTH / 2 - 10, y + 6);
+
+        drawCenteredText(matrices, textRenderer, skillset.getName(), x + WIDTH / 2, y + 28, 0xA09B83);
+
+        renderText(matrices, currentLevel, this.y + 44);
 
         int nextLevel = currentLevel + 1;
         if (!skillset.isMax(nextLevel)) {
-            renderText(matrices, nextLevel, this.y + 84);
-            for (LevelButton levelButton : levelUpButtons) {
-                levelButton.render(matrices, mouseX, mouseY, delta);
-            }
+            renderText(matrices, nextLevel, this.y + 86);
+            levelUpButton.render(matrices, mouseX, mouseY, delta);
+            levelUpMaxButton.render(matrices, mouseX, mouseY, delta);
         } else {
-            drawCenteredText(matrices, textRenderer, "CONGRATS!", x + WIDTH / 2, y + 96, 10525571);
+            drawCenteredText(matrices, textRenderer, "MAX CONGRATS!", x + WIDTH / 2, y + 96, 0xA09B83);
         }
     }
 
     private void renderText(MatrixStack matrices, int level, int y) {
-        textRenderer.draw(matrices, skillset.getLevelName(level), x + 20, y, 10525571);
-        List<OrderedText> descriptionTexts = textRenderer.wrapLines(Text.literal(skillset.getLevelDescription(level)), 140);
+        textRenderer.draw(matrices, skillset.getLevelName(level), x + 20, y, 0xA09B83);
+        List<OrderedText> descriptionTexts = textRenderer.wrapLines(Text.literal(skillset.getLevelDescription(level)), 135);
         if (descriptionTexts.size() > 0) {
             matrices.push();
-            matrices.scale(0.8f, 0.8f, 0.8f);
-            textRenderer.draw(matrices, descriptionTexts.get(0), (x + 20) * (1f / 0.8f), (y + textRenderer.fontHeight) * (1f / 0.8f), 10525571);
+            matrices.scale(0.8f, 0.8f, 1.0F);
+            textRenderer.draw(matrices, descriptionTexts.get(0), (x + 20) * (1f / 0.8f), (y + textRenderer.fontHeight) * (1f / 0.8f), 0xA09B83);
             matrices.pop();
         }
         renderItems(level, y + textRenderer.fontHeight * 2);
@@ -102,11 +103,12 @@ public class LevelUpWidget extends DrawableHelper implements Drawable, Element, 
 
     private void renderItems(int level, int y) {
         ItemRenderer itemRenderer = MinecraftClient.getInstance().getItemRenderer();
+        RenderSystem.applyModelViewMatrix();
         int item = 0;
         for (Item unlockItem : skillset.getUnlockItems(level)) {
             itemRenderer.renderGuiItemIcon(unlockItem.getDefaultStack(), x + 20 * (item + 1), y);
             item++;
-            if (item >= 5) return;
+            if (item >= 5) break;
         }
     }
 
@@ -120,20 +122,7 @@ public class LevelUpWidget extends DrawableHelper implements Drawable, Element, 
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        for (LevelButton levelButton : this.levelUpButtons) {
-            if (levelButton.mouseClicked(mouseX, mouseY, button)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void reloadLevel() {
-        reloadLevel(persistentData.getInt(skillset.getId().toString()));
-    }
-
-    public void reloadLevel(int level) {
-        currentLevel = level;
+        return levelUpButton.mouseClicked(mouseX, mouseY, button) || levelUpMaxButton.mouseClicked(mouseX, mouseY, button);
     }
 
     private void levelUp(int amount) {
@@ -156,14 +145,34 @@ public class LevelUpWidget extends DrawableHelper implements Drawable, Element, 
             NetworkManager.sendToServer(SkillcraftNetworking.SKILL_LEVEL_UP_ID, buf);
 
             reloadLevel(currentLevel + amount);
+            reloadButtons();
         }
     }
 
-    private void levelUpMax() {
+    private int maxLevelUp() {
         int currentLevel = persistentData.getInt(skillset.getId().toString());
-        int amount = skillset.getLevelAmount(currentLevel, player.experienceLevel, player.isCreative());
+        return skillset.getLevelAmount(currentLevel, player.experienceLevel, player.isCreative());
+    }
 
-        levelUp(amount);
+    public void reload() {
+        reloadLevel();
+        reloadButtons();
+    }
+
+    private void reloadLevel() {
+        reloadLevel(persistentData.getInt(skillset.getId().toString()));
+
+    }
+
+    private void reloadLevel(int level) {
+        currentLevel = level;
+    }
+
+    private void reloadButtons() {
+        int costOne = skillset.getLevelCost(currentLevel, 1);
+        levelUpButton.setMessage( Text.literal(!player.isCreative() && costOne > player.experienceLevel ? costOne + "l" : "+1" + "/" + costOne + "l"));
+        int amount = maxLevelUp();
+        levelUpMaxButton.setMessage(Text.literal(amount == 0 ? "--" : "+" + amount + "/" + skillset.getLevelCost(currentLevel, amount) + "l"));
     }
 
     @Override
