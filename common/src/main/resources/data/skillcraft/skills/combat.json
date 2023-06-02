@@ -20,15 +20,6 @@
     },
     {
       "level": 2,
-      "name": "Zerberster",
-      "description": "You could kill anyone except yourself because you would be to strong for you.",
-      "unlock": [
-        "minecraft:wooden_axe"
-      ],
-      "reward": "minecraft:wooden_sword"
-    },
-    {
-      "level": 3,
       "name": "Stone Tamer",
       "description": "U can use Stone Sword",
       "unlock": [
@@ -36,7 +27,7 @@
       ]
     },
     {
-      "level": 4,
+      "level": 3,
       "name": "Gold Tamer",
       "description": "U can use Gold Sword",
       "unlock": [
@@ -44,7 +35,7 @@
       ]
     },
     {
-      "level": 5,
+      "level": 4,
       "name": "Iron Tamer",
       "description": "U can use Iron Sword",
       "unlock": [
@@ -52,7 +43,7 @@
       ]
     },
     {
-      "level": 6,
+      "level": 5,
       "name": "Dia Tamer",
       "description": "U can use Dia Sword",
       "unlock": [
@@ -60,7 +51,7 @@
       ]
     },
     {
-      "level": 7,
+      "level": 6,
       "name": "Netheride Tamer",
       "description": "U can use Netheride Sword",
       "unlock": [

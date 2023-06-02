@@ -1,0 +1,36 @@
+{
+  "replace": false,
+  "id": "skillcraft:skill",
+  "name": "SKILL",
+  "description": "not implemented jet",
+  "icon": "minecraft:dirt",
+  "levels": [
+    {
+      "level": 0,
+      "name": "Noob",
+      "description": "You can do nothing.",
+      "unlock": [
+        "minecraft:dirt"
+      ],
+      "reward": "minecraft:dirt"
+    },
+    {
+      "level": 1,
+      "name": "Okay",
+      "description": "You can build with wood.",
+      "unlock": [
+        "minecraft:oak_planks",
+        "minecraft:chest"
+      ]
+    },
+    {
+      "level": 5,
+      "name": "Expert",
+      "description": "You can build with stone.",
+      "unlock": [
+        "minecraft:cobblestone"
+      ],
+      "reward": "minecraft:chest"
+    }
+  ]
+}

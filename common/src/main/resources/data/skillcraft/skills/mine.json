@@ -6,24 +6,73 @@
   "levels": [
     {
       "level": 0,
-      "name": "Noob",
-      "description": "You can do nothing.",
-      "unlock": [
-      ]
+      "name": "Nooby",
+      "description": "You can do nothing."
     },
     {
       "level": 1,
       "name": "Trainee",
-      "description": "You can build with wood.",
+      "description": "Mine with wood tools.",
       "unlock": [
+        "minecraft:wooden_pickaxe",
+        "minecraft:wooden_axe",
+        "minecraft:wooden_shovel",
+        "minecraft:wooden_hoe"
+      ]
+    },
+    {
+      "level": 2,
+      "name": "Miner",
+      "description": "Mine with stone tools.",
+      "unlock": [
+        "minecraft:stone_pickaxe",
+        "minecraft:stone_axe",
+        "minecraft:stone_shovel",
+        "minecraft:stone_hoe"
+      ]
+    },
+    {
+      "level": 3,
+      "name": "IronMan",
+      "description": "Mine with iron tools.",
+      "unlock": [
+        "minecraft:iron_pickaxe",
+        "minecraft:iron_axe",
+        "minecraft:iron_shovel",
+        "minecraft:iron_hoe"
+      ]
+    },
+    {
+      "level": 4,
+      "name": "IronMan",
+      "description": "Mine with iron tools.",
+      "unlock": [
+        "minecraft:iron_pickaxe",
+        "minecraft:iron_axe",
+        "minecraft:iron_shovel",
+        "minecraft:iron_hoe"
       ]
     },
     {
       "level": 5,
-      "name": "Forklift driver",
-      "description": "You can build with stone.",
+      "name": "Driller",
+      "description": "Mine with diamond tools.",
       "unlock": [
-        "minecraft:stone_pickaxe"
+        "minecraft:diamond_pickaxe",
+        "minecraft:diamond_axe",
+        "minecraft:diamond_shovel",
+        "minecraft:diamond_hoe"
+      ]
+    },
+    {
+      "level": 6,
+      "name": "MineCrafter",
+      "description": "Mine with netherite tools.",
+      "unlock": [
+        "minecraft:netherite_pickaxe",
+        "minecraft:netherite_axe",
+        "minecraft:netherite_shovel",
+        "minecraft:netherite_hoe"
       ]
     }
   ]

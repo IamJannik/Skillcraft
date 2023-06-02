@@ -2,30 +2,36 @@
   "replace": false,
   "id": "skillcraft:build",
   "name": "BUILDING",
+  "icon": "minecraft:oak_planks",
   "levels": [
     {
       "level": 0,
-      "name": "Noob",
+      "name": "Dirty",
       "description": "You can do nothing.",
       "unlock": [
-        "minecraft:dirt"
+        "minecraft:dirt",
+        "minecraft:grass_block"
       ]
     },
     {
       "level": 1,
-      "name": "Trainee",
+      "name": "Woody",
       "description": "You can build with wood.",
       "unlock": [
-        "minecraft:oak_planks"
+        "minecraft:oak_planks",
+        "minecraft:chest"
       ]
     },
     {
       "level": 5,
-      "name": "Forklift driver",
+      "name": "Stoner",
       "description": "You can build with stone.",
       "unlock": [
+        "minecraft:stone",
         "minecraft:cobblestone",
-        "minecraft:chest"
+        "minecraft:andesite",
+        "minecraft:diorite",
+        "minecraft:granite"
       ],
       "reward": "minecraft:stone_pickaxe"
     }

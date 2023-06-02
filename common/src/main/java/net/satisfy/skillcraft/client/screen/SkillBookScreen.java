@@ -48,6 +48,7 @@ public class SkillBookScreen extends Screen {
     private void createSkillButtons(Map<Identifier, Skillset> skillsets) {
         int skill = 0;
         for (Identifier identifier : skillsets.keySet().stream().sorted(new SkillComparator()).toList()) {
+            System.out.println(identifier);
             SkillButton skillButton = new SkillButton(
                     x + 26 + (SkillButton.SKILL_BUTTON_WIDTH + 4) * (skill % 3),
                     y + 46 + (SkillButton.SKILL_BUTTON_HEIGHT + 4) * (skill / 3),
