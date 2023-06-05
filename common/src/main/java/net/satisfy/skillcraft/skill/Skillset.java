@@ -47,11 +47,11 @@ public class Skillset {
         return levels.keySet().stream().max(Comparator.comparingInt(x -> x)).orElse(0);
     }
 
-    public boolean isMax(int level) {
+    public boolean isMax(final int level) {
         return level > getMaxLevel();
     }
 
-    public int getLevelAmount(int currentLevel, int xp, boolean creative) {
+    public int getLevelAmount(final int currentLevel, final int xp, final boolean creative) {
         int cost = 0;
         int amount = 0;
         while (!this.isMax(currentLevel + amount + 1)) {
@@ -67,7 +67,7 @@ public class Skillset {
         return amount;
     }
 
-     public int getLevelCost(int currentLevel, int amount) {
+     public int getLevelCost(int currentLevel, final int amount) {
         int cost = 0;
 
         for (int i = 0; i < amount; i++) {
@@ -77,20 +77,20 @@ public class Skillset {
         return cost;
     }
 
-    protected int nextLevelCost(int level) {
+    protected int nextLevelCost(final int level) {
         // Formula for calculating the required xp/level for the next level.
         return isMax(level) ? 0 : ((level * level) / (getMaxLevel() + 2)) + 2;
     }
 
-    public String getLevelName(int level) {
+    public String getLevelName(final int level) {
         return isMax(level) ? "Max Level" : levels.containsKey(level) ? levels.get(level).getName() : "Level " + level;
     }
 
-    public String getLevelDescription(int level) {
+    public String getLevelDescription(final int level) {
         return isMax(level) ? "Congrats, you have reached the max level!" : levels.containsKey(level) ? levels.get(level).getDescription() : "";
     }
 
-    public List<Item> getUnlockItems(int level) {
+    public List<Item> getUnlockItems(final int level) {
         return levels.containsKey(level) ? levels.get(level).getUnlockItems() : Lists.newArrayList();
     }
 
@@ -110,5 +110,4 @@ public class Skillset {
     public int hashCode() {
         return Objects.hash(id, getName());
     }
-
 }
