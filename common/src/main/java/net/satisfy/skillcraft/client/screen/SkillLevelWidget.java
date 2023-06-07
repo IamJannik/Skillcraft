@@ -15,7 +15,6 @@ import net.minecraft.item.Item;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.random.Random;
 import net.satisfy.skillcraft.SkillcraftIdentifier;
 import net.satisfy.skillcraft.skill.Skillset;
 

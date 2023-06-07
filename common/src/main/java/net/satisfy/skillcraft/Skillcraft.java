@@ -1,13 +1,7 @@
 package net.satisfy.skillcraft;
 
 import dev.architectury.event.events.client.ClientPlayerEvent;
-import dev.architectury.event.events.common.ChunkEvent;
 import dev.architectury.event.events.common.CommandRegistrationEvent;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.chunk.Chunk;
 import net.satisfy.skillcraft.event.PlayerJoinEvent;
 import net.satisfy.skillcraft.event.ResetCommandEvent;
 import net.satisfy.skillcraft.json.SkillLoader;
