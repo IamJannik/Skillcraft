@@ -12,7 +12,7 @@ import java.util.*;
 public class Skillset {
     private final Identifier id;
     @Nullable
-    public final String name;
+    private final String name;
     @Nullable
     private final String description;
     @Nullable

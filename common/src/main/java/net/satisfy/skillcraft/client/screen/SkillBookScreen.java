@@ -22,7 +22,7 @@ public class SkillBookScreen extends Screen {
     public final static int WIDTH = 294;
     public final static int HEIGHT = 147;
     private Identifier currentSkill;
-    private LevelWidget skillLevelsWidget;
+    private LevelScrollWidget skillLevelsWidget;
     private final List<SkillButton> skillButtons = Lists.newArrayList();
 
     public SkillBookScreen() {
@@ -38,7 +38,7 @@ public class SkillBookScreen extends Screen {
 
         createSkillButtons(SkillLoader.REGISTRY_SKILLS);
         SkillsScrollWidget skillsWidget = new SkillsScrollWidget(this.x, this.y, this.skillButtons);
-        skillLevelsWidget = new LevelWidget(this.x + WIDTH / 2, this.y, currentSkill, textRenderer);
+        skillLevelsWidget = new LevelScrollWidget(this.x + WIDTH / 2, this.y, currentSkill, textRenderer);
         reloadSkill(currentSkill);
 
         this.addDrawableChild(skillsWidget);
@@ -48,22 +48,21 @@ public class SkillBookScreen extends Screen {
     private void createSkillButtons(Map<Identifier, Skillset> skillsets) {
         int skill = 0;
         for (Identifier identifier : skillsets.keySet().stream().sorted(new SkillComparator()).toList()) {
-            System.out.println(identifier);
             SkillButton skillButton = new SkillButton(
-                    x + 26 + (SkillButton.SKILL_BUTTON_WIDTH + 4) * (skill % 3),
-                    y + 46 + (SkillButton.SKILL_BUTTON_HEIGHT + 4) * (skill / 3),
+                    x + 26 + (SkillButton.WIDTH + 4) * (skill % 3),
+                    y + 46 + (SkillButton.HEIGHT + 4) * (skill / 3),
                     (button) -> reloadSkill(identifier),
                     Text.literal(skillsets.get(identifier).getName())
             );
             this.skillButtons.add(skillButton);
             skill++;
         }
+
     }
 
     private void reloadSkill(Identifier skill) {
         this.currentSkill = skill;
-        skillLevelsWidget.setSkillset(skill);
         SkillcraftClient.lastBookSkill = currentSkill;
-        skillLevelsWidget.reload();
+        skillLevelsWidget.setSkill(skill);
     }
 }

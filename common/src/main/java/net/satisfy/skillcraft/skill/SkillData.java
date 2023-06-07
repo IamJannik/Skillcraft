@@ -20,12 +20,11 @@ public class SkillData {
         return level;
     }
 
-    public static int resetSkill(IEntityDataSaver player, String skill) {
+    public static void resetSkill(IEntityDataSaver player, String skill) {
         NbtCompound nbt = player.getPersistentData();
         int level = 0;
         nbt.putInt(skill, level);
         syncSkill(skill, level, (ServerPlayerEntity) player);
-        return level;
     }
 
     public static void syncSkill(String skill, int level, ServerPlayerEntity player) {

@@ -9,12 +9,12 @@ import net.minecraft.util.Identifier;
 import net.satisfy.skillcraft.SkillcraftIdentifier;
 
 public class SkillButton extends TexturedButtonWidget {
-    public final static int SKILL_BUTTON_WIDTH = 30;
-    public final static int SKILL_BUTTON_HEIGHT = 24;
+    public final static int WIDTH = 30;
+    public final static int HEIGHT = 24;
     public final static Identifier TEXTURE = new SkillcraftIdentifier("textures/gui/skillcraft_book_left.png");
 
     public SkillButton(int x, int y, PressAction pressAction, Text text) {
-        super(x, y, SKILL_BUTTON_WIDTH, SKILL_BUTTON_HEIGHT, 154, 36, 28, TEXTURE, 256, 256, pressAction, text);
+        super(x, y, WIDTH, HEIGHT, 154, 36, 28, TEXTURE, 256, 256, pressAction, text);
     }
 
     @Override
