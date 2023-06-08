@@ -22,6 +22,7 @@ public class SkillLoader implements ResourceReloader {
 
     @Override
     public CompletableFuture<Void> reload(Synchronizer synchronizer, ResourceManager manager, Profiler prepareProfiler, Profiler applyProfiler, Executor prepareExecutor, Executor applyExecutor) {
+        Skillcraft.LOGGER.debug("Reload skills for skillcraft :)");
         List<CompletableFuture<Skillset>> completableFutures = this.buildSkillsets(manager, prepareExecutor);
         CompletableFuture<Void> completableFuture = CompletableFuture.allOf(completableFutures.toArray(CompletableFuture[]::new));
         Objects.requireNonNull(synchronizer);

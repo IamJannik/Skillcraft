@@ -60,7 +60,7 @@ public class SkillsScrollWidget extends SkillcraftScrollWidget {
         enableScissor(this.x + 26, this.y + 46, this.x + 124, this.y + 127);
         matrices.push();
         matrices.translate(0.0, -this.scrollY, 0.0);
-        this.renderButtons(matrices, mouseX, mouseY + (int)this.scrollY, delta);
+        this.renderButtons(matrices, mouseX, mouseY + this.scrollY, delta);
         matrices.pop();
         disableScissor();
         this.renderScrollButton(matrices);
@@ -78,7 +78,7 @@ public class SkillsScrollWidget extends SkillcraftScrollWidget {
             int height = this.getScrollbarHeight();
             int left = this.x + this.width - 19;
             int right = this.x + this.width - 19 + 4;
-            int top = Math.max(this.y + 45, (int) this.scrollY * (scrollFieldHeigth - height) / this.getMaxScrollY() + this.y + 45);
+            int top = Math.max(this.y + 45, this.scrollY * (scrollFieldHeigth - height) / this.getMaxScrollY() + this.y + 45);
             int bottom = top + height;
             drawHorizontalLine(matrices, left, right, top, 0xffA09B83);//TOP
             drawVerticalLine(matrices, left, top, bottom, 0xffA09B83);//LEFT

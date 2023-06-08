@@ -51,22 +51,6 @@ public class Skillset {
         return level > getMaxLevel();
     }
 
-    public int getLevelAmount(final int currentLevel, final int xp, final boolean creative) {
-        int cost = 0;
-        int amount = 0;
-        while (!this.isMax(currentLevel + amount + 1)) {
-            int nextCost = cost + this.nextLevelCost(currentLevel + amount + 1);
-
-            if (!creative && nextCost > xp) {
-                break;
-            }
-
-            cost = nextCost;
-            amount++;
-        }
-        return amount;
-    }
-
      public int getLevelCost(int currentLevel, final int amount) {
         int cost = 0;
 
