@@ -35,8 +35,6 @@ public abstract class SkillcraftScrollWidget extends ClickableWidget {
         this.drawTexture(matrices, this.x, this.y, 0, 0, this.width, this.height);
     }
 
-    abstract protected void renderForeground(MatrixStack matrices, int mouseX, int mouseY, float delta);
-
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (!this.visible) {
@@ -88,14 +86,11 @@ public abstract class SkillcraftScrollWidget extends ClickableWidget {
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
         if (this.visible && this.isOver(mouseX, mouseY) && this.overflows()) {
-            int deltaYPerScroll = 42;//TODO custom
-            this.setScrollY(this.scrollY - amount * deltaYPerScroll);
+            this.setScrollY(this.scrollY - amount * getYPerScroll());
             return true;
         }
         return false;
     }
-
-    abstract protected boolean overflows();
 
     private void setScrollY(double scrollY) {
         this.scrollY = MathHelper.clamp(scrollY, 0.0, this.getMaxScrollY());
@@ -109,12 +104,14 @@ public abstract class SkillcraftScrollWidget extends ClickableWidget {
         return mouseX >= (double)this.x && mouseX < (double)(this.x + this.width) && mouseY >= (double)this.y && mouseY < (double)(this.y + this.height);
     }
 
-    abstract protected boolean isOverScroll(double mouseX, double mouseY);
-
     protected int getScrollbarHeight() {
         return MathHelper.clamp((int)((float)((this.getScrollWindowHeight() + 2) * (this.getScrollWindowHeight() + 2)) / (float)this.getContentsHeight()), 16, this.getScrollWindowHeight() + 2);
     }
 
+    abstract protected void renderForeground(MatrixStack matrices, int mouseX, int mouseY, float delta);
+    abstract protected boolean overflows();
+    abstract protected boolean isOverScroll(double mouseX, double mouseY);
+    abstract protected int getYPerScroll();
     abstract protected int getContentsHeight();
     abstract protected int getScrollWindowHeight();
 

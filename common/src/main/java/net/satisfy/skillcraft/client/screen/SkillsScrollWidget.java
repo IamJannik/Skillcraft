@@ -36,12 +36,17 @@ public class SkillsScrollWidget extends SkillcraftScrollWidget {
 
     @Override
     protected boolean overflows() {
-        return getContentsHeight() > (SkillButton.HEIGHT + 5) * 3;
+        return getContentsHeight() > (SkillButton.HEIGHT + 4) * 3;
+    }
+
+    @Override
+    protected int getYPerScroll() {
+        return SkillButton.HEIGHT + 4;
     }
 
     @Override
     protected int getContentsHeight() {
-        return (SkillButton.HEIGHT + 5) * ((this.skillButtons.size() - 1) / 3 + 1);
+        return (SkillButton.HEIGHT + 4) * (this.skillButtons.size() / 3 - 3);
     }
 
     @Override

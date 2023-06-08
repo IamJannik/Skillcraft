@@ -57,7 +57,6 @@ public class SkillBookScreen extends Screen {
             this.skillButtons.add(skillButton);
             skill++;
         }
-
     }
 
     private void reloadSkill(Identifier skill) {

@@ -26,8 +26,8 @@ import static net.satisfy.skillcraft.util.SkillcraftUtil.createPacketBuf;
 @Environment(EnvType.CLIENT)
 public class LevelScrollWidget extends SkillcraftScrollWidget {
     private static final Identifier BACKGROUND;
-    private List<SkillLevelWidget> levels;
     private Skillset skill;
+    private List<SkillLevelWidget> levels;
     private int currentLevel = 0;
     private final NbtCompound persistentData;
     private final LevelButton levelUpButton;
@@ -43,17 +43,17 @@ public class LevelScrollWidget extends SkillcraftScrollWidget {
         this.player = MinecraftClient.getInstance().player;
         this.persistentData = ((IEntityDataSaver) this.player).getPersistentData();
 
-        this.setSkill(skillId);
-
         levelUpButton = new LevelButton(this.x + 31, y + 126, levelButton -> levelUp(1), Text.of("+1"));
         levelUpMaxButton = new LevelButton(this.x + 75, y + 126,levelButton -> levelUp(maxLevelUp()), Text.of("+MAX"));
-        reloadButtons();
+
+        this.setSkill(skillId);
     }
 
     public void setSkill(Identifier skillId) {
         this.skill = SkillLoader.REGISTRY_SKILLS.get(skillId);
         createLevels();
         this.reloadLevel(((IEntityDataSaver)player).getPersistentData().getInt(skill.getId().toString()));
+        this.reloadButtons();
     }
 
     private void levelUp(int amount) {
@@ -128,12 +128,17 @@ public class LevelScrollWidget extends SkillcraftScrollWidget {
 
     @Override
     protected boolean overflows() {
-        return getContentsHeight() > (SkillLevelWidget.HEIGHT + 5) * 2;
+        return getContentsHeight() > (SkillLevelWidget.HEIGHT + 4) * 2;
+    }
+
+    @Override
+    protected int getYPerScroll() {
+        return SkillLevelWidget.HEIGHT + 4;
     }
 
     @Override
     protected int getContentsHeight() {
-        return (SkillLevelWidget.HEIGHT + 5) * ((this.levels.size() - 1) + 1);
+        return (SkillLevelWidget.HEIGHT + 4) * (this.levels.size() - 2);
     }
 
     @Override
