@@ -1,7 +1,7 @@
 modLoader = "javafml"
 loaderVersion = "[43,)"
 #issueTrackerURL = ""
-license = "Insert License Here"
+license = "ARR"
 
 [[mods]]
 modId = "skillcraft"
@@ -9,9 +9,10 @@ version = "${version}"
 displayName = "Skillcraft"
 authors = ["BMJO", "satisfy"]
 description = '''
-This is an example description! Tell everyone what your mod is about!
+Offering players a new way to progress and unlock new items, blocks, and gear.
+With this mod, players will have to level up specific skills to access these rewards, creating a sense of achievement and challenge.
 '''
-#logoFile = ""
+logoFile = "assets/skillcraft/icon.png"
 
 [[dependencies.skillcraft]]
 modId = "forge"

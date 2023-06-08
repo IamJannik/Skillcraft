@@ -3,16 +3,16 @@
   "id": "skillcraft",
   "version": "${version}",
   "name": "Skillcraft",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "description": "Offering players a new way to progress and unlock new items, blocks, and gear. With this mod, players will have to level up specific skills to access these rewards, creating a sense of achievement and challenge.",
   "authors": [
     "satisfy",
     "BMJO"
   ],
   "contact": {
     "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "sources": "https://github.com/satisfyu/Skillcraft"
   },
-  "license": "Insert License Here",
+  "license": "ARR",
   "icon": "assets/skillcraft/icon.png",
   "environment": "*",
   "entrypoints": {
@@ -24,8 +24,7 @@
     ]
   },
   "mixins": [
-    "skillcraft.mixins.json",
-    "skillcraft-common.mixins.json"
+    "skillcraft.mixins.json"
   ],
   "depends": {
     "fabric": "*",
