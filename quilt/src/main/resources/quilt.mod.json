@@ -10,7 +10,7 @@
     "version": "${version}",
     "name": "Skillcraft",
     "description": "Offering players a new way to progress and unlock new items, blocks, and gear. With this mod, players will have to level up specific skills to access these rewards, creating a sense of achievement and challenge.",
-    "authors": ["satisfy", "BMJO"],
+    "authors": ["bmjo", "BMJO"],
     "contact": {
       "sources": "https://github.com/architectury/architectury-templates"
     },
@@ -20,7 +20,7 @@
     "environment": "*",
     "entrypoints": {
       "init": [
-        "net.satisfy.skillcraft.quilt.SkillcraftQuilt"
+        "net.bmjo.skillcraft.quilt.SkillcraftQuilt"
       ]
     },
     "depends": [

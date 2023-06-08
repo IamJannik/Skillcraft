@@ -5,22 +5,22 @@
   "name": "Skillcraft",
   "description": "Offering players a new way to progress and unlock new items, blocks, and gear. With this mod, players will have to level up specific skills to access these rewards, creating a sense of achievement and challenge.",
   "authors": [
-    "satisfy",
-    "BMJO"
+    "BMJO",
+    "satisfy"
   ],
   "contact": {
     "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/satisfyu/Skillcraft"
+    "sources": "https://github.com/bmjou/Skillcraft"
   },
   "license": "ARR",
   "icon": "assets/skillcraft/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.satisfy.skillcraft.fabric.SkillcraftFabric"
+      "net.bmjo.skillcraft.fabric.SkillcraftFabric"
     ],
     "client": [
-      "net.satisfy.skillcraft.fabriclike.client.SkillcraftClientFabricLike"
+      "net.bmjo.skillcraft.fabriclike.client.SkillcraftClientFabricLike"
     ]
   },
   "mixins": [

@@ -1,11 +1,12 @@
 {
   "required": true,
-  "package": "net.satisfy.skillcraft.mixin.forge",
+  "package": "net.bmjo.skillcraft.mixin.forge",
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
   "client": [
   ],
   "mixins": [
+    "PlayerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
