@@ -3,7 +3,7 @@
   "weight": 0,
   "id": "skillcraft:combat",
   "name": "COMBAT",
-  "icon": "minecraft:diamond_sword",
+  "icon": "minecraft:stone_sword",
   "levels": [
     {
       "level": 0,
@@ -15,7 +15,8 @@
       "name": "Padavan",
       "description": "I will teach you how to fight.",
       "unlock": [
-        "minecraft:wooden_sword"
+        "minecraft:wooden_sword",
+        "minecraft:shield"
       ]
     },
     {
@@ -39,7 +40,8 @@
       "name": "Iron Tamer",
       "description": "U can use Iron Sword",
       "unlock": [
-        "minecraft:iron_sword"
+        "minecraft:iron_sword",
+        "minecraft:iron_chestplate"
       ]
     },
     {

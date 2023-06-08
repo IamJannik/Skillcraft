@@ -49,12 +49,12 @@ public class SkillLevelWidget extends DrawableHelper implements Drawable, Elemen
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         renderBackground(matrices);
-        textRenderer.draw(matrices, skillset.getLevelName(level), x + 4, y + 2, 0xA09B83);
+        textRenderer.draw(matrices, skillset.getLevelName(level), x + 4, y + 3, 0xA09B83);
         List<OrderedText> descriptionTexts = textRenderer.wrapLines(Text.literal(skillset.getLevelDescription(level)), 135);
         if (descriptionTexts.size() > 0) {
             matrices.push();
             matrices.scale(0.8f, 0.8f, 1.0F);
-            textRenderer.draw(matrices, descriptionTexts.get(0), (x + 4) * (1f / 0.8f), (y + 2 + textRenderer.fontHeight) * (1f / 0.8f), 0xA09B83);
+            textRenderer.draw(matrices, descriptionTexts.get(0), (x + 4) * (1f / 0.8f), (y + 3 + textRenderer.fontHeight) * (1f / 0.8f), 0xA09B83);
             matrices.pop();
         }
     }

@@ -2,7 +2,7 @@
   "replace": false,
   "id": "skillcraft:build",
   "name": "BUILDING",
-  "icon": "minecraft:oak_planks",
+  "icon": "minecraft:stone_bricks",
   "levels": [
     {
       "level": 0,
@@ -31,7 +31,8 @@
         "minecraft:cobblestone",
         "minecraft:andesite",
         "minecraft:diorite",
-        "minecraft:granite"
+        "minecraft:granite",
+        "minecraft:furnace"
       ],
       "reward": "minecraft:stone_pickaxe"
     }

@@ -21,6 +21,6 @@ public class LevelButton extends TexturedButtonWidget {
 
         textRenderer.draw(matrices, "Level UP", this.x + 4, this.y + 4, 0xffffff);
         Text message = this.getMessage();
-        textRenderer.draw(matrices, message, this.x + 65 - (message.getString().length() * 6), this.y + 4, 0xffffff);
+        textRenderer.draw(matrices, message, this.x + 64 - (message.getString().length() * 6), this.y + 4, 0xffffff);
     }
 }

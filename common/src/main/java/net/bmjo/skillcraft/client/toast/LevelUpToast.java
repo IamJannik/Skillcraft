@@ -2,6 +2,7 @@ package net.bmjo.skillcraft.client.toast;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.bmjo.skillcraft.SkillcraftIdentifier;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.toast.Toast;
 import net.minecraft.client.toast.ToastManager;
@@ -29,15 +30,15 @@ public class LevelUpToast implements Toast {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, TEXTURE);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        manager.drawTexture(matrices, 0, 0, 0, 0, this.getWidth(), this.getHeight());
-        manager.getClient().textRenderer.draw(matrices, Text.literal(skillset.getName() + ": " + this.skillset.getLevelName(skillLevel)), 16.0F, 6.0F, 0xA09B83); //0x257a3c);
+        DrawableHelper.drawTexture(matrices, 0, 0, 0, 0, this.getWidth(), this.getHeight(), this.getWidth(), this.getHeight());
+        manager.getClient().textRenderer.draw(matrices, Text.literal(skillset.getName() + ": " + this.skillset.getLevelName(skillLevel)), 16.0F, 6.0F, 0x007100);
 
         MatrixStack matrixStack = RenderSystem.getModelViewStack();
 
         matrixStack.push();
         matrixStack.scale(0.6F, 0.6F, 1.0F);
         RenderSystem.applyModelViewMatrix();
-        manager.getClient().getItemRenderer().renderInGui(skillset.getIcon(), 3, 3);
+        manager.getClient().getItemRenderer().renderInGui(skillset.getIcon(), 8, 8);
         matrixStack.pop();
 
         matrixStack.push();

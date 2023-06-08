@@ -2,6 +2,7 @@ package net.bmjo.skillcraft.client.toast;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.bmjo.skillcraft.SkillcraftIdentifier;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.toast.Toast;
@@ -41,7 +42,7 @@ public class CantUseToast implements Toast {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, TEXTURE);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        manager.drawTexture(matrices, 0, 0, 0, 0, this.getWidth(), this.getHeight(), this.getWidth(), this.getHeight());
+        DrawableHelper.drawTexture(matrices, 0, 0, 0, 0, this.getWidth(), this.getHeight(), this.getWidth(), this.getHeight());
         List<OrderedText> lines = manager.getClient().textRenderer.wrapLines(Text.literal("Needs " + skill.getName() + " lv. " + level + "."), 125);
         if (lines.size() == 1) {
             manager.getClient().textRenderer.draw(matrices, item.getName(), 30.0F, 7.0F, titleColor);
