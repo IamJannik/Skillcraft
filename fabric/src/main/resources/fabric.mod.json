@@ -24,7 +24,8 @@
     ]
   },
   "mixins": [
-    "skillcraft.mixins.json"
+    "skillcraft.mixins.json",
+    "skillcraft-common.mixins.json"
   ],
   "depends": {
     "fabric": "*",

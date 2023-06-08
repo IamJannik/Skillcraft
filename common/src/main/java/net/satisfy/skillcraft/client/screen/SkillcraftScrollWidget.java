@@ -11,8 +11,10 @@ import net.minecraft.util.math.MathHelper;
 
 public abstract class SkillcraftScrollWidget extends ClickableWidget {
     private final Identifier BACKGROUND;
-    protected double scrollY;
+    protected int scrollY;
     private boolean scrollbarDragged;
+    private int startEase;
+    private int time;
 
     public SkillcraftScrollWidget(int x, int y, Identifier background) {
         super(x, y, 147, 163, Text.of(""));
@@ -24,7 +26,31 @@ public abstract class SkillcraftScrollWidget extends ClickableWidget {
         this.renderBackground(matrices);
         this.hovered = isOver(mouseX, mouseY);
 
+        this.ease();
         renderForeground(matrices, mouseX, mouseY, delta);
+    }
+
+    private void ease() {
+        int duration = 20;
+        if (this.scrollY % this.getYPerScroll() == 0 || scrollbarDragged || time > duration) {
+            this.time = 0;
+            this.startEase = 0;
+            return;
+        }
+        if (this.time == 0) {
+            this.startEase = scrollY;
+        }
+
+        int modEase = this.startEase % this.getYPerScroll();
+        if (modEase < getYPerScroll() / 2) {
+            int difference = getYPerScroll() / 2 - modEase;
+            this.scrollY = startEase - (int)(difference * easeInOutSine((double)time / duration));
+        } else {
+            int difference = getYPerScroll() - modEase;
+            this.scrollY = startEase + (int)(difference * easeInOutSine((double)time / duration));
+        }
+
+        this.time++;
     }
 
     private void renderBackground(MatrixStack matrices) {
@@ -69,13 +95,14 @@ public abstract class SkillcraftScrollWidget extends ClickableWidget {
     public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
         if (this.visible && this.isFocused() && this.overflows() && this.scrollbarDragged) {
             if (mouseY < (double)this.y) {
-                this.setScrollY(0.0);
+                this.setScrollY(0);
             } else if (mouseY > (double)(this.y + this.height)) {
                 this.setScrollY(this.getMaxScrollY());
             } else {
                 int scrollbarHeight = this.getScrollbarHeight();
-                double scroll = scrollbarHeight == 0 ? 1 : Math.max(1, this.getMaxScrollY() / (this.getScrollWindowHeight() - scrollbarHeight));
-                this.setScrollY(this.scrollY + deltaY * scroll);
+                int scroll = scrollbarHeight == 0 ? 1 : Math.max(1, this.getMaxScrollY() / (this.getScrollWindowHeight() - scrollbarHeight));
+                this.setScrollY(this.scrollY + (int) (deltaY * scroll));
+                this.time = 0;
             }
 
             return true;
@@ -86,14 +113,15 @@ public abstract class SkillcraftScrollWidget extends ClickableWidget {
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
         if (this.visible && this.isOver(mouseX, mouseY) && this.overflows()) {
-            this.setScrollY(this.scrollY - amount * getYPerScroll());
+            this.setScrollY(this.scrollY - (int)(amount * getYPerScroll()));
+            this.time = 0;
             return true;
         }
         return false;
     }
 
-    private void setScrollY(double scrollY) {
-        this.scrollY = MathHelper.clamp(scrollY, 0.0, this.getMaxScrollY());
+    private void setScrollY(int scrollY) {
+        this.scrollY = MathHelper.clamp(scrollY, 0, this.getMaxScrollY());
     }
 
     protected int getMaxScrollY() {
@@ -106,6 +134,10 @@ public abstract class SkillcraftScrollWidget extends ClickableWidget {
 
     protected int getScrollbarHeight() {
         return MathHelper.clamp((int)((float)((this.getScrollWindowHeight() + 2) * (this.getScrollWindowHeight() + 2)) / (float)this.getContentsHeight()), 16, this.getScrollWindowHeight() + 2);
+    }
+
+    private double easeInOutSine(double time) {
+        return -0.5 * (Math.cos(Math.PI * time) - 1);
     }
 
     abstract protected void renderForeground(MatrixStack matrices, int mouseX, int mouseY, float delta);
