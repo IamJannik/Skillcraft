@@ -1,11 +1,9 @@
 package net.bmjo.skillcraft.event;
 
 import dev.architectury.event.events.client.ClientPlayerEvent;
-import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.networking.NetworkManager;
 import net.bmjo.skillcraft.networking.SkillcraftNetworking;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.server.network.ServerPlayerEntity;
 
 import static net.bmjo.skillcraft.util.SkillcraftUtil.createPacketBuf;
 

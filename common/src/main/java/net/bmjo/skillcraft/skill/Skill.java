@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class Skillset {
+public class Skill {
     private final Identifier id;
     @Nullable
     private final String name;
@@ -19,7 +19,7 @@ public class Skillset {
     private final Item icon;
     private final Map<Integer, SkillLevel> levels;
 
-    public Skillset(Identifier id, @Nullable String name, @Nullable String description, @Nullable Item icon, Map<Integer, SkillLevel> levels) {
+    public Skill(Identifier id, @Nullable String name, @Nullable String description, @Nullable Item icon, Map<Integer, SkillLevel> levels) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -67,27 +67,27 @@ public class Skillset {
     }
 
     public String getLevelName(final int level) {
-        return isMax(level) ? "Max Level" : levels.containsKey(level) ? levels.get(level).getName() : "Level " + level;
+        return isMax(level) ? "Max Level" : levels.containsKey(level) ? levels.get(level).name() : "Level " + level;
     }
 
     public String getLevelDescription(final int level) {
-        return isMax(level) ? "Congrats, you have reached the max level!" : levels.containsKey(level) ? levels.get(level).getDescription() : "";
+        return isMax(level) ? "Congrats, you have reached the max level!" : levels.containsKey(level) ? levels.get(level).description() : "";
     }
 
     public List<Item> getUnlockItems(final int level) {
-        return levels.containsKey(level) ? levels.get(level).getUnlockItems() : Lists.newArrayList();
+        return levels.containsKey(level) ? levels.get(level).unlockItems() : Lists.newArrayList();
     }
 
     @Override
     public String toString() {
-        return "Skillset: " + " ID: " + id + " / name: " + getName() +  ", levels: " + levels + ';';
+        return "Skill: " + " ID: " + id + " / name: " + getName() +  ", levels: " + levels + ';';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Skillset skillset)) return false;
-        return id.equals(skillset.id) && Objects.equals(this.getName(), skillset.getName());
+        if (!(o instanceof Skill skill)) return false;
+        return id.equals(skill.id) && Objects.equals(this.getName(), skill.getName());
     }
 
     @Override

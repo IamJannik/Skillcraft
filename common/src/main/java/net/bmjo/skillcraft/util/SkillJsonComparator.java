@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 
 import java.util.Comparator;
 
-public class SkillJsonComperator implements Comparator<JsonObject> {
+public class SkillJsonComparator implements Comparator<JsonObject> {
     @Override
     public int compare(JsonObject jo1, JsonObject jo2) {
         int jo1Weight = jo1.get("weight").getAsInt();

@@ -18,7 +18,6 @@ public class Skillcraft {
         SkillcraftNetworking.registerS2CPackets();
 
         ClientPlayerEvent.CLIENT_PLAYER_JOIN.register(new PlayerJoinEvent());
-        PlayerEvent.PLAYER_RESPAWN.register(new PlayerRespawnEvent());
         ClientPlayerEvent.CLIENT_PLAYER_RESPAWN.register(new ClientPlayerRespawnEvent());
         PlayerEvent.PLAYER_CLONE.register(new PlayerCloneEvent());
         CommandRegistrationEvent.EVENT.register(new ResetCommandEvent());

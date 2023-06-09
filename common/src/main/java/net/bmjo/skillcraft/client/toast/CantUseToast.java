@@ -14,7 +14,7 @@ import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
-import net.bmjo.skillcraft.skill.Skillset;
+import net.bmjo.skillcraft.skill.Skill;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
@@ -26,13 +26,13 @@ public class CantUseToast implements Toast {
     private static final int titleColor = 14686475;
     private static final int textColor = 9830400;
     @NotNull
-    private final Skillset skill;
+    private final Skill skill;
     private final Item item;
     private final int level;
     private boolean soundPlayed;
 
-    public CantUseToast(@NotNull Skillset skillset, Item item, int level) {
-        this.skill = skillset;
+    public CantUseToast(@NotNull Skill skill, Item item, int level) {
+        this.skill = skill;
         this.item = item;
         this.level = level;
     }

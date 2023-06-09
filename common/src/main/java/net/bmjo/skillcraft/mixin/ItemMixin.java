@@ -16,7 +16,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import net.bmjo.skillcraft.client.toast.CantUseToast;
 import net.bmjo.skillcraft.json.SkillLoader;
-import net.bmjo.skillcraft.skill.Skillset;
+import net.bmjo.skillcraft.skill.Skill;
 import net.bmjo.skillcraft.util.IEntityDataSaver;
 import net.bmjo.skillcraft.util.ISkillItem;
 import org.spongepowered.asm.mixin.Mixin;
@@ -71,8 +71,8 @@ public class ItemMixin implements ISkillItem {
             assert player != null;
             int playerLevel = player.getPersistentData().getInt(skillKey.toString());
             if (playerLevel < requiredLevel) {
-                Skillset skillset = SkillLoader.REGISTRY_SKILLS.get(skillKey);
-                tooltip.add(Text.literal("Needs " + skillset.getName() + ": Level " + requiredLevel).formatted(Formatting.RED));
+                Skill skill = SkillLoader.REGISTRY_SKILLS.get(skillKey);
+                tooltip.add(Text.literal("Needs " + skill.getName() + ": Level " + requiredLevel).formatted(Formatting.RED));
             }
 
         }

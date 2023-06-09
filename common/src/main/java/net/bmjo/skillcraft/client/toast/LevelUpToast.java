@@ -10,7 +10,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import net.bmjo.skillcraft.skill.Skillset;
+import net.bmjo.skillcraft.skill.Skill;
 import net.minecraft.util.Identifier;
 
 import java.util.List;
@@ -18,11 +18,11 @@ import java.util.List;
 public class LevelUpToast implements Toast {
     private static final Identifier TEXTURE = new SkillcraftIdentifier("textures/gui/skill_toast.png");
     private static final long DURATION = 5000L;
-    private final Skillset skillset;
+    private final Skill skill;
     private final int skillLevel;
 
-    public LevelUpToast(Skillset skillset, int skillLevel) {
-        this.skillset = skillset;
+    public LevelUpToast(Skill skill, int skillLevel) {
+        this.skill = skill;
         this.skillLevel = skillLevel;
     }
     @Override
@@ -31,20 +31,20 @@ public class LevelUpToast implements Toast {
         RenderSystem.setShaderTexture(0, TEXTURE);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         DrawableHelper.drawTexture(matrices, 0, 0, 0, 0, this.getWidth(), this.getHeight(), this.getWidth(), this.getHeight());
-        manager.getClient().textRenderer.draw(matrices, Text.literal(skillset.getName() + ": " + this.skillset.getLevelName(skillLevel)), 16.0F, 6.0F, 0x007100);
+        manager.getClient().textRenderer.draw(matrices, Text.literal(skill.getName() + ": " + this.skill.getLevelName(skillLevel)), 16.0F, 6.0F, 0x007100);
 
         MatrixStack matrixStack = RenderSystem.getModelViewStack();
 
         matrixStack.push();
         matrixStack.scale(0.6F, 0.6F, 1.0F);
         RenderSystem.applyModelViewMatrix();
-        manager.getClient().getItemRenderer().renderInGui(skillset.getIcon(), 8, 8);
+        manager.getClient().getItemRenderer().renderInGui(skill.getIcon(), 8, 8);
         matrixStack.pop();
 
         matrixStack.push();
         matrixStack.scale(0.7F, 0.7F, 1.0F);
         RenderSystem.applyModelViewMatrix();
-        List<ItemStack> itemIcons = this.skillset.getUnlockItems(skillLevel).stream().map(Item::getDefaultStack).toList();
+        List<ItemStack> itemIcons = this.skill.getUnlockItems(skillLevel).stream().map(Item::getDefaultStack).toList();
         int item = 0;
         for (ItemStack itemIcon : itemIcons) {
             manager.getClient().getItemRenderer().renderInGui(itemIcon, 22 + 16 * item, 22);

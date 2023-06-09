@@ -9,7 +9,7 @@ import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.profiler.Profiler;
 import net.bmjo.skillcraft.Skillcraft;
-import net.bmjo.skillcraft.skill.Skillset;
+import net.bmjo.skillcraft.skill.Skill;
 import org.apache.commons.compress.utils.Lists;
 
 import java.util.*;
@@ -17,21 +17,21 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 public class SkillLoader implements ResourceReloader {
-    public static Map<Identifier, Skillset> REGISTRY_SKILLS = new HashMap<>();
+    public static Map<Identifier, Skill> REGISTRY_SKILLS = new HashMap<>();
     private static final String SKILL_PATH = "skills";
 
     @Override
     public CompletableFuture<Void> reload(Synchronizer synchronizer, ResourceManager manager, Profiler prepareProfiler, Profiler applyProfiler, Executor prepareExecutor, Executor applyExecutor) {
         Skillcraft.LOGGER.debug("Reload skills for skillcraft :)");
-        List<CompletableFuture<Skillset>> completableFutures = this.buildSkillsets(manager, prepareExecutor);
+        List<CompletableFuture<Skill>> completableFutures = this.buildSkills(manager, prepareExecutor);
         CompletableFuture<Void> completableFuture = CompletableFuture.allOf(completableFutures.toArray(CompletableFuture[]::new));
         Objects.requireNonNull(synchronizer);
         return completableFuture.thenCompose(synchronizer::whenPrepared).thenAcceptAsync(
-                void_ -> completableFutures.forEach((completableFutureSkillset) -> completableFutures.stream().map(CompletableFuture::join).forEach(skillset -> REGISTRY_SKILLS.put(skillset.getId(), skillset))), applyExecutor);
+                void_ -> completableFutures.forEach((completableFutureSkill) -> completableFutures.stream().map(CompletableFuture::join).forEach(skill -> REGISTRY_SKILLS.put(skill.getId(), skill))), applyExecutor);
     }
 
-    private List<CompletableFuture<Skillset>> buildSkillsets(ResourceManager resourceManager, Executor prepareExecutor) {
-        List<CompletableFuture<Skillset>> skills = Lists.newArrayList();
+    private List<CompletableFuture<Skill>> buildSkills(ResourceManager resourceManager, Executor prepareExecutor) {
+        List<CompletableFuture<Skill>> skills = Lists.newArrayList();
 
         Map<Identifier, List<Resource>> skillJsons = getJsons(resourceManager);
 
@@ -42,20 +42,20 @@ public class SkillLoader implements ResourceReloader {
                 skills.add(CompletableFuture.supplyAsync(
                         () -> SkillConvertor.convertSkill(jsonObject)));
             } else {
-                Skillset skillset = combineMultipleSkillset(skillJsons.get(identifier));
+                Skill skill = combineMultipleSkills(skillJsons.get(identifier));
                 skills.add(CompletableFuture.supplyAsync(
-                        () -> skillset, prepareExecutor));
+                        () -> skill, prepareExecutor));
             }
         }
         return skills;
     }
 
-    private Skillset combineMultipleSkillset(List<Resource> resources) {
+    private Skill combineMultipleSkills(List<Resource> resources) {
         List<JsonObject> skillJsons = Lists.newArrayList();
         for (Resource resource : resources) {
             skillJsons.add(SkillReader.read(resource));
         }
-        return SkillReader.combineSkillsets(skillJsons);
+        return SkillReader.combineSkills(skillJsons);
     }
 
     private static Map<Identifier, List<Resource>> getJsons(ResourceManager resourceManager) {

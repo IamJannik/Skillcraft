@@ -9,7 +9,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.bmjo.skillcraft.client.SkillcraftClient;
 import net.bmjo.skillcraft.json.SkillLoader;
-import net.bmjo.skillcraft.skill.Skillset;
+import net.bmjo.skillcraft.skill.Skill;
 import net.bmjo.skillcraft.util.SkillComparator;
 
 import java.util.List;
@@ -36,8 +36,7 @@ public class SkillBookScreen extends Screen {
         this.x = (this.width - WIDTH) / 2;
         this.y = (this.height - HEIGHT) / 2;
 
-        createSkillButtons(SkillLoader.REGISTRY_SKILLS);
-        SkillsScrollWidget skillsWidget = new SkillsScrollWidget(this.x, this.y, this.skillButtons);
+        SkillsScrollWidget skillsWidget = new SkillsScrollWidget(this.x, this.y, createSkillButtons(SkillLoader.REGISTRY_SKILLS));
         skillLevelsWidget = new LevelScrollWidget(this.x + WIDTH / 2, this.y, currentSkill, textRenderer);
         reloadSkill(currentSkill);
 
@@ -45,18 +44,20 @@ public class SkillBookScreen extends Screen {
         this.addDrawableChild(skillLevelsWidget);
     }
 
-    private void createSkillButtons(Map<Identifier, Skillset> skillsets) {
-        int skill = 0;
-        for (Identifier identifier : skillsets.keySet().stream().sorted(new SkillComparator()).toList()) {
+    private List<SkillButton> createSkillButtons(Map<Identifier, Skill> skill) {
+        List<SkillButton> skillButtons = Lists.newArrayList();
+        int skillNr = 0;
+        for (Identifier identifier : skill.keySet().stream().sorted(new SkillComparator()).toList()) {
             SkillButton skillButton = new SkillButton(
-                    x + 26 + (SkillButton.WIDTH + 4) * (skill % 3),
-                    y + 46 + (SkillButton.HEIGHT + 4) * (skill / 3),
+                    x + 26 + (SkillButton.WIDTH + 4) * (skillNr % 3),
+                    y + 46 + (SkillButton.HEIGHT + 4) * (skillNr / 3),
                     (button) -> reloadSkill(identifier),
-                    Text.literal(skillsets.get(identifier).getName())
+                    Text.literal(skill.get(identifier).getName())
             );
-            this.skillButtons.add(skillButton);
-            skill++;
+            skillButtons.add(skillButton);
+            skillNr++;
         }
+        return skillButtons;
     }
 
     private void reloadSkill(Identifier skill) {

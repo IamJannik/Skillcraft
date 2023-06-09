@@ -15,7 +15,7 @@ import net.minecraft.util.Identifier;
 import net.bmjo.skillcraft.SkillcraftIdentifier;
 import net.bmjo.skillcraft.json.SkillLoader;
 import net.bmjo.skillcraft.networking.SkillcraftNetworking;
-import net.bmjo.skillcraft.skill.Skillset;
+import net.bmjo.skillcraft.skill.Skill;
 import net.bmjo.skillcraft.util.IEntityDataSaver;
 import org.apache.commons.compress.utils.Lists;
 
@@ -26,7 +26,7 @@ import static net.bmjo.skillcraft.util.SkillcraftUtil.createPacketBuf;
 @Environment(EnvType.CLIENT)
 public class LevelScrollWidget extends SkillcraftScrollWidget {
     private static final Identifier BACKGROUND;
-    private Skillset skill;
+    private Skill skill;
     private List<SkillLevelWidget> levels;
     private int currentLevel = 0;
     private final NbtCompound persistentData;
@@ -160,11 +160,11 @@ public class LevelScrollWidget extends SkillcraftScrollWidget {
 
     private void renderScrollButton(MatrixStack matrices) {
         if (this.overflows()) {
-            int scrollFieldHeigth = this.getScrollWindowHeight() + 2;
+            int scrollFieldHeight = this.getScrollWindowHeight() + 2;
             int height = this.getScrollbarHeight();
             int left = this.x + this.width - 19;
             int right = this.x + this.width - 19 + 4;
-            int top = Math.max(this.y + 42, this.scrollY * (scrollFieldHeigth - height) / this.getMaxScrollY() + this.y + 42);
+            int top = Math.max(this.y + 42, this.scrollY * (scrollFieldHeight - height) / this.getMaxScrollY() + this.y + 42);
             int bottom = top + height;
             drawHorizontalLine(matrices, left, right, top, 0xffA09B83);//TOP
             drawVerticalLine(matrices, left, top, bottom, 0xffA09B83);//LEFT

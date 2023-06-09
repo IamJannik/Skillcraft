@@ -16,7 +16,7 @@ import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.bmjo.skillcraft.SkillcraftIdentifier;
-import net.bmjo.skillcraft.skill.Skillset;
+import net.bmjo.skillcraft.skill.Skill;
 
 import java.util.List;
 
@@ -26,17 +26,17 @@ public class SkillLevelWidget extends DrawableHelper implements Drawable, Elemen
     public final static int HEIGHT = 38;
     private final int x;
     private final int y;
-    private final Skillset skillset;
+    private final Skill skill;
     private final int level;
     private final TextRenderer textRenderer;
     private boolean current;
     private boolean locked;
 
 
-    public SkillLevelWidget(int x, int y, Skillset skillset, int level, TextRenderer textRenderer) {
+    public SkillLevelWidget(int x, int y, Skill skill, int level, TextRenderer textRenderer) {
         this.x = x;
         this.y = y;
-        this.skillset = skillset;
+        this.skill = skill;
         this.level = level;
         this.textRenderer = textRenderer;
     }
@@ -49,8 +49,8 @@ public class SkillLevelWidget extends DrawableHelper implements Drawable, Elemen
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         renderBackground(matrices);
-        textRenderer.draw(matrices, skillset.getLevelName(level), x + 4, y + 3, 0xA09B83);
-        List<OrderedText> descriptionTexts = textRenderer.wrapLines(Text.literal(skillset.getLevelDescription(level)), 135);
+        textRenderer.draw(matrices, skill.getLevelName(level), x + 4, y + 3, 0xA09B83);
+        List<OrderedText> descriptionTexts = textRenderer.wrapLines(Text.literal(skill.getLevelDescription(level)), 135);
         if (descriptionTexts.size() > 0) {
             matrices.push();
             matrices.scale(0.8f, 0.8f, 1.0F);
@@ -71,7 +71,7 @@ public class SkillLevelWidget extends DrawableHelper implements Drawable, Elemen
         ItemRenderer itemRenderer = MinecraftClient.getInstance().getItemRenderer();
         RenderSystem.applyModelViewMatrix();
         int item = 0;
-        for (Item unlockItem : skillset.getUnlockItems(level)) {
+        for (Item unlockItem : skill.getUnlockItems(level)) {
             itemRenderer.renderGuiItemIcon(unlockItem.getDefaultStack(), x + 4 + 20 * (item), (int) ((y + textRenderer.fontHeight * 2) - scrollY));
             item++;
             if (item >= 5) break;

@@ -7,7 +7,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.bmjo.skillcraft.skill.SkillLevel;
-import net.bmjo.skillcraft.skill.Skillset;
+import net.bmjo.skillcraft.skill.Skill;
 import net.bmjo.skillcraft.util.ISkillBlock;
 import net.bmjo.skillcraft.util.ISkillItem;
 import org.apache.commons.compress.utils.Lists;
@@ -20,7 +20,7 @@ import java.util.Map;
 public class SkillConvertor {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().serializeNulls().create();
 
-    public static Skillset convertSkill(JsonObject jsonObject) {
+    public static Skill convertSkill(JsonObject jsonObject) {
         Identifier id = new Identifier(jsonObject.get("id").getAsString());
         @Nullable
         String name = jsonObject.has("name") ? jsonObject.get("name").getAsString() : null;
@@ -29,9 +29,9 @@ public class SkillConvertor {
         @Nullable
         Item icon = jsonObject.has("icon") ? JsonHelper.asItem(jsonObject.get("icon"), jsonObject.get("icon").getAsString()) : null;
         Map<Integer, SkillLevel> levelsUnsorted = new HashMap<>();
-        getLevels(jsonObject, id).forEach(skillLevel -> levelsUnsorted.put(skillLevel.level, skillLevel));
+        getLevels(jsonObject, id).forEach(skillLevel -> levelsUnsorted.put(skillLevel.level(), skillLevel));
 
-        return new Skillset(id, name, description, icon, levelsUnsorted);
+        return new Skill(id, name, description, icon, levelsUnsorted);
     }
 
     public static ArrayList<SkillLevel> getLevels(JsonObject jsonObject, Identifier skillId) {

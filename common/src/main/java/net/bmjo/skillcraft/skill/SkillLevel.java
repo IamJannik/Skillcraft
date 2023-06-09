@@ -6,17 +6,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 
-public class SkillLevel {
-    public final int level;
-    @Nullable
-    private final String name;
-    @Nullable
-    private final String description;
-    private final ArrayList<Item> unlockItems;
-    private final ArrayList<Block> unlockBlocks;
-    @Nullable
-    private final Item reward;
-
+public record SkillLevel(int level, @Nullable String name, @Nullable String description, ArrayList<Item> unlockItems, ArrayList<Block> unlockBlocks, @Nullable Item reward) {
     public SkillLevel(int level, @Nullable String name, @Nullable String description, @Nullable ArrayList<Item> unlockItems, @Nullable ArrayList<Block> unlockBlocks, @Nullable Item reward) {
         this.level = level;
         this.name = name;
@@ -26,29 +16,23 @@ public class SkillLevel {
         this.reward = reward;
     }
 
-    public String getName() {
+    @Override
+    public int level() {
+        return level;
+    }
+
+    @Override
+    public String name() {
         return name != null ? name : "Level " + level;
     }
 
-    public String getDescription() {
+    @Override
+    public String description() {
         return description != null ? description : "Add Description in JSON";
-    }
-
-    public ArrayList<Item> getUnlockItems() {
-        return this.unlockItems;
-    }
-
-    public ArrayList<Block> getUnlockBlocks() {
-        return this.unlockBlocks;
-    }
-
-    @Nullable
-    public Item getReward() {
-        return this.reward;
     }
 
     @Override
     public String toString() {
-        return "SkillLevel: " +  "level=" + level + ", name='" + getName() + '\'' + ", description='" + getDescription() + '\'' + ';';
+        return "SkillLevel: " + "level=" + level + ", name='" + name() + '\'' + ", description='" + description() + '\'' + ';';
     }
 }

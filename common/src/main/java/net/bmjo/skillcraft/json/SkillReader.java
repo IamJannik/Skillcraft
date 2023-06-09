@@ -2,8 +2,8 @@ package net.bmjo.skillcraft.json;
 
 import com.google.gson.*;
 import net.minecraft.resource.Resource;
-import net.bmjo.skillcraft.skill.Skillset;
-import net.bmjo.skillcraft.util.SkillJsonComperator;
+import net.bmjo.skillcraft.skill.Skill;
+import net.bmjo.skillcraft.util.SkillJsonComparator;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
@@ -32,8 +32,8 @@ public class SkillReader {
         return null;
     }
 
-    public static Skillset combineSkillsets(List<JsonObject> skillJsons) {
-        skillJsons.sort(new SkillJsonComperator());
+    public static Skill combineSkills(List<JsonObject> skillJsons) {
+        skillJsons.sort(new SkillJsonComparator());
         if (skillJsons.stream().anyMatch(jsonObject -> jsonObject.get(REPLACE_KEY).getAsBoolean())) {
             List<JsonObject> replaceSkills = skillJsons.stream().filter(jsonObject -> jsonObject.get(REPLACE_KEY).getAsBoolean()).toList();
             return SkillConvertor.convertSkill(replaceSkills.get(0)); //returns Skill with REPLACE=true & highest WEIGHT
