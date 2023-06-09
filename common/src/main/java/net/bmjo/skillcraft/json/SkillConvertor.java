@@ -1,12 +1,13 @@
 package net.bmjo.skillcraft.json;
 
 import com.google.gson.*;
+import net.bmjo.skillcraft.skill.SkillLevel;
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
-import net.bmjo.skillcraft.skill.SkillLevel;
+import net.bmjo.skillcraft.skill.Level;
 import net.bmjo.skillcraft.skill.Skill;
 import net.bmjo.skillcraft.util.ISkillBlock;
 import net.bmjo.skillcraft.util.ISkillItem;
@@ -28,14 +29,14 @@ public class SkillConvertor {
         String description = jsonObject.has("description") ? jsonObject.get("description").getAsString() : null;
         @Nullable
         Item icon = jsonObject.has("icon") ? JsonHelper.asItem(jsonObject.get("icon"), jsonObject.get("icon").getAsString()) : null;
-        Map<Integer, SkillLevel> levelsUnsorted = new HashMap<>();
-        getLevels(jsonObject, id).forEach(skillLevel -> levelsUnsorted.put(skillLevel.level(), skillLevel));
+        Map<Integer, Level> levelsUnsorted = new HashMap<>();
+        getLevels(jsonObject, id).forEach(level -> levelsUnsorted.put(level.level(), level));
 
         return new Skill(id, name, description, icon, levelsUnsorted);
     }
 
-    public static ArrayList<SkillLevel> getLevels(JsonObject jsonObject, Identifier skillId) {
-        ArrayList<SkillLevel> levels = Lists.newArrayList();
+    public static ArrayList<Level> getLevels(JsonObject jsonObject, Identifier skillId) {
+        ArrayList<Level> levels = Lists.newArrayList();
         JsonArray levelsJson = jsonObject.getAsJsonArray("levels");
         for (JsonElement jsonElement : levelsJson) {
             JsonObject levelJson = GSON.fromJson(jsonElement, JsonObject.class);
@@ -48,7 +49,7 @@ public class SkillConvertor {
             ArrayList<Block> unlockBlocks = getUnlockBlocks(unlockItems, skillId, level);
             @Nullable
             Item levelReward = levelJson.has("reward") ? JsonHelper.getItem(levelJson, "reward") : null;
-            levels.add(new SkillLevel(level, levelName, levelDescription, unlockItems, unlockBlocks, levelReward));
+            levels.add(new Level(level, levelName, levelDescription, unlockItems, unlockBlocks, levelReward));
         }
         return levels;
     }
@@ -66,8 +67,7 @@ public class SkillConvertor {
 
     private static void safeSkillOnItem(Item unlockItem, Identifier skillId, int level) {
         if (unlockItem instanceof ISkillItem skillItem) {
-            skillItem.setSkillKey(skillId);
-            skillItem.setRequiredLevel(level);
+            skillItem.addSkillLevel(new SkillLevel(skillId, level));
         }
     }
 
@@ -85,8 +85,7 @@ public class SkillConvertor {
 
     private static void safeSkillOnBlock(Block unlockBlock, Identifier skillId, int level) {
         if (unlockBlock instanceof ISkillBlock skillBLock) {
-            skillBLock.setSkillKey(skillId);
-            skillBLock.setRequiredLevel(level);
+            skillBLock.addSkillLevel(new SkillLevel(skillId, level));
         }
     }
 }

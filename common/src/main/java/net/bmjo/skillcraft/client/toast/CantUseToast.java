@@ -2,6 +2,8 @@ package net.bmjo.skillcraft.client.toast;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.bmjo.skillcraft.SkillcraftIdentifier;
+import net.bmjo.skillcraft.json.SkillLoader;
+import net.bmjo.skillcraft.skill.SkillLevel;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.sound.PositionedSoundInstance;
@@ -25,16 +27,18 @@ public class CantUseToast implements Toast {
     private static final Identifier TEXTURE = new SkillcraftIdentifier("textures/gui/skill_toast.png");
     private static final int titleColor = 14686475;
     private static final int textColor = 9830400;
-    @NotNull
-    private final Skill skill;
     private final Item item;
-    private final int level;
+    private SkillLevel skillLevel;
+
     private boolean soundPlayed;
 
-    public CantUseToast(@NotNull Skill skill, Item item, int level) {
-        this.skill = skill;
+    public CantUseToast(SkillLevel skillLevel, Item item) {
+        this.skillLevel = skillLevel;
         this.item = item;
-        this.level = level;
+    }
+
+    public void setSkillLevel(SkillLevel skillLevel) {
+        this.skillLevel = skillLevel;
     }
 
     @Override
@@ -43,7 +47,9 @@ public class CantUseToast implements Toast {
         RenderSystem.setShaderTexture(0, TEXTURE);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         DrawableHelper.drawTexture(matrices, 0, 0, 0, 0, this.getWidth(), this.getHeight(), this.getWidth(), this.getHeight());
-        List<OrderedText> lines = manager.getClient().textRenderer.wrapLines(Text.literal("Needs " + skill.getName() + " lv. " + level + "."), 125);
+
+        Skill skill = SkillLoader.REGISTRY_SKILLS.get(skillLevel.skill());
+        List<OrderedText> lines = manager.getClient().textRenderer.wrapLines(Text.literal("Needs " + skill.getName() + ": " + skill.getLevelName(skillLevel.level())), 125);
         if (lines.size() == 1) {
             manager.getClient().textRenderer.draw(matrices, item.getName(), 30.0F, 7.0F, titleColor);
             manager.getClient().textRenderer.draw(matrices, lines.get(0), 30.0F, 18.0F, textColor);

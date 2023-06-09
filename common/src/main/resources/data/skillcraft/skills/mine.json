@@ -44,28 +44,18 @@
     },
     {
       "level": 4,
-      "name": "IronMan",
-      "description": "Mine with iron tools.",
-      "unlock": [
-        "minecraft:iron_pickaxe",
-        "minecraft:iron_axe",
-        "minecraft:iron_shovel",
-        "minecraft:iron_hoe"
-      ]
-    },
-    {
-      "level": 5,
       "name": "Driller",
       "description": "Mine with diamond tools.",
       "unlock": [
         "minecraft:diamond_pickaxe",
         "minecraft:diamond_axe",
         "minecraft:diamond_shovel",
-        "minecraft:diamond_hoe"
+        "minecraft:diamond_hoe",
+        "minecraft:iron_pickaxe"
       ]
     },
     {
-      "level": 6,
+      "level": 5,
       "name": "MineCrafter",
       "description": "Mine with netherite tools.",
       "unlock": [

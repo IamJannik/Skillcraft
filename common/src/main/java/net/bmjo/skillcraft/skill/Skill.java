@@ -17,9 +17,9 @@ public class Skill {
     private final String description;
     @Nullable
     private final Item icon;
-    private final Map<Integer, SkillLevel> levels;
+    private final Map<Integer, Level> levels;
 
-    public Skill(Identifier id, @Nullable String name, @Nullable String description, @Nullable Item icon, Map<Integer, SkillLevel> levels) {
+    public Skill(Identifier id, @Nullable String name, @Nullable String description, @Nullable Item icon, Map<Integer, Level> levels) {
         this.id = id;
         this.name = name;
         this.description = description;
