@@ -3,6 +3,7 @@ package net.bmjo.skillcraft.client.toast;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.bmjo.skillcraft.SkillcraftIdentifier;
 import net.bmjo.skillcraft.json.SkillLoader;
+import net.bmjo.skillcraft.skill.Skill;
 import net.bmjo.skillcraft.skill.SkillLevel;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.GameRenderer;
@@ -16,8 +17,6 @@ import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
-import net.bmjo.skillcraft.skill.Skill;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
 import java.util.List;

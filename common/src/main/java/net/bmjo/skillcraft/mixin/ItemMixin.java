@@ -80,7 +80,6 @@ public class ItemMixin implements ISkillItem {
         }
     }
 
-    @Environment(EnvType.CLIENT)
     @Inject(method = "appendTooltip",  at = @At("HEAD"))
     public void appendSkillTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context, CallbackInfo ci) {
         if (!skillLevels.isEmpty()) {
