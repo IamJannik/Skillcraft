@@ -23,7 +23,6 @@ public class SkillBookScreen extends Screen {
     public final static int HEIGHT = 147;
     private Identifier currentSkill;
     private LevelScrollWidget skillLevelsWidget;
-    private final List<SkillButton> skillButtons = Lists.newArrayList();
 
     public SkillBookScreen() {
         super(Text.literal("SKILLS").formatted(Formatting.GOLD));
