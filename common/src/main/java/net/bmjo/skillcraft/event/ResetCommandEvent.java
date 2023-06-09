@@ -27,6 +27,5 @@ public class ResetCommandEvent implements CommandRegistrationEvent {
                     return 1;
                 }))
         );
-
     }
 }

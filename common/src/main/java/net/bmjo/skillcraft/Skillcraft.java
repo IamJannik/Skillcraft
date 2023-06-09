@@ -2,8 +2,8 @@ package net.bmjo.skillcraft;
 
 import dev.architectury.event.events.client.ClientPlayerEvent;
 import dev.architectury.event.events.common.CommandRegistrationEvent;
-import net.bmjo.skillcraft.event.PlayerJoinEvent;
-import net.bmjo.skillcraft.event.ResetCommandEvent;
+import dev.architectury.event.events.common.PlayerEvent;
+import net.bmjo.skillcraft.event.*;
 import net.bmjo.skillcraft.json.SkillLoader;
 import net.bmjo.skillcraft.networking.SkillcraftNetworking;
 import org.apache.logging.log4j.LogManager;
@@ -18,6 +18,9 @@ public class Skillcraft {
         SkillcraftNetworking.registerS2CPackets();
 
         ClientPlayerEvent.CLIENT_PLAYER_JOIN.register(new PlayerJoinEvent());
+        PlayerEvent.PLAYER_RESPAWN.register(new PlayerRespawnEvent());
+        ClientPlayerEvent.CLIENT_PLAYER_RESPAWN.register(new ClientPlayerRespawnEvent());
+        PlayerEvent.PLAYER_CLONE.register(new PlayerCloneEvent());
         CommandRegistrationEvent.EVENT.register(new ResetCommandEvent());
     }
 }

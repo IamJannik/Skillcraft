@@ -16,7 +16,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(AbstractBlock.AbstractBlockState.class)
 public class BlockStateMixin {
-
     @Inject(method = "onUse", at = @At("HEAD"), cancellable = true)
     public void useLevel(World world, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
         BlockState blockState = world.getBlockState(hit.getBlockPos());

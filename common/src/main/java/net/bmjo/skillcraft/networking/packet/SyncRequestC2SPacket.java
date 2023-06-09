@@ -12,6 +12,8 @@ public class SyncRequestC2SPacket implements NetworkManager.NetworkReceiver {
     @Override
     public void receive(PacketByteBuf buf, NetworkManager.PacketContext context) {
         ServerPlayerEntity player = (ServerPlayerEntity)context.getPlayer();
+        System.out.println(player);
+        System.out.println(((IEntityDataSaver)player).getPersistentData());
         for (Identifier identifier: SkillLoader.REGISTRY_SKILLS.keySet()) {
             SkillData.syncSkill(identifier.toString(), ((IEntityDataSaver)player).getPersistentData().getInt(identifier.toString()), player);
         }

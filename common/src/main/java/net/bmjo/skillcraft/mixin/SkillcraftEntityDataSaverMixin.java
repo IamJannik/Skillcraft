@@ -18,6 +18,11 @@ public abstract class SkillcraftEntityDataSaverMixin implements IEntityDataSaver
         return persistentData == null ? persistentData = new NbtCompound() : persistentData;
     }
 
+    @Override
+    public void setPersistentData(NbtCompound persistentData) {
+        this.persistentData = persistentData;
+    }
+
     @Inject(method = "writeNbt", at = @At("HEAD"))
     protected void injectWriteMethod(NbtCompound nbt, CallbackInfoReturnable<NbtCompound> cir) {
         if(persistentData != null) {
@@ -25,9 +30,9 @@ public abstract class SkillcraftEntityDataSaverMixin implements IEntityDataSaver
         }
     }
 
-    @Inject(method = "readNbt", at = @At("HEAD"))
-    protected void injectReadMethod(NbtCompound nbt, CallbackInfo info) {
-        if (nbt.contains("skillcraft.skill_data", 10)) {
+    @Inject(method = "readNbt", at = @At(value = "HEAD"))
+    protected void injectReadMethod(NbtCompound nbt, CallbackInfo ci) {
+        if (nbt.contains("skillcraft.skill_data")) {
             persistentData = nbt.getCompound("skillcraft.skill_data");
         }
     }
