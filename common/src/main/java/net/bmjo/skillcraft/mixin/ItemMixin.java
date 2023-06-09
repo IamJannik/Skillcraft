@@ -6,8 +6,6 @@ import net.bmjo.skillcraft.skill.Skill;
 import net.bmjo.skillcraft.skill.SkillLevel;
 import net.bmjo.skillcraft.util.IEntityDataSaver;
 import net.bmjo.skillcraft.util.ISkillItem;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.network.ClientPlayerEntity;
