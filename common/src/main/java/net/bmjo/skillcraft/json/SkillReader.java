@@ -1,9 +1,11 @@
 package net.bmjo.skillcraft.json;
 
-import com.google.gson.*;
-import net.minecraft.resource.Resource;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import net.bmjo.skillcraft.skill.Skill;
 import net.bmjo.skillcraft.util.SkillJsonComparator;
+import net.minecraft.resource.Resource;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
@@ -12,7 +14,6 @@ import java.util.List;
 
 public class SkillReader {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().serializeNulls().create();
-    private static final String REPLACE_KEY = "replace";
 
     public SkillReader() {
     }
@@ -34,12 +35,16 @@ public class SkillReader {
 
     public static Skill combineSkills(List<JsonObject> skillJsons) {
         skillJsons.sort(new SkillJsonComparator());
-        if (skillJsons.stream().anyMatch(jsonObject -> jsonObject.get(REPLACE_KEY).getAsBoolean())) {
-            List<JsonObject> replaceSkills = skillJsons.stream().filter(jsonObject -> jsonObject.get(REPLACE_KEY).getAsBoolean()).toList();
+        if (skillJsons.stream().anyMatch(jsonObject -> jsonObject.get("replace").getAsBoolean())) {
+            List<JsonObject> replaceSkills = skillJsons.stream().filter(jsonObject -> jsonObject.get("replace").getAsBoolean()).toList();
             return SkillConvertor.convertSkill(replaceSkills.get(0)); //returns Skill with REPLACE=true & highest WEIGHT
         }
-        //TODO combine SKILLS
-        return SkillConvertor.convertSkill(skillJsons.get(0));
+        Skill skill = SkillConvertor.convertSkill(skillJsons.get(0));
+        for (JsonObject jsonObject : skillJsons) {
+            Skill combineSkill = SkillConvertor.convertSkill(jsonObject);
+            skill.combineSkill(combineSkill);
+        }
+        return skill;
     }
 
 

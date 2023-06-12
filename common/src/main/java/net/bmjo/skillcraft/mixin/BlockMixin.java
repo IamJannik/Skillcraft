@@ -11,33 +11,35 @@ import net.minecraft.client.toast.ToastManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
+import org.apache.commons.compress.utils.Lists;
 import org.spongepowered.asm.mixin.Mixin;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Mixin(Block.class)
 public class BlockMixin implements ISkillBlock {
-    List<SkillLevel> skillLevels = new ArrayList<>();
+    List<SkillLevel> skillLevels = Lists.newArrayList();
     private CantUseToast cantUseToast;
 
     @Override
     public void addSkillLevel(SkillLevel skillLevel) {
-        this.skillLevels.add(skillLevel);
+        if (!this.skillLevels.contains(skillLevel)) {
+            this.skillLevels.add(skillLevel);
+        }
     }
 
     @Override
     public boolean hasRequiredLevel(PlayerEntity player, Block block) {
-        if (skillLevels.isEmpty() || player.isCreative()) return true;
+        if (this.skillLevels.isEmpty() || player.isCreative()) return true;
         NbtCompound nbtCompound = ((IEntityDataSaver)player).getPersistentData();
         boolean enough = true;
-        for (SkillLevel skillLevel : skillLevels) {
+        for (SkillLevel skillLevel : this.skillLevels) {
             if (nbtCompound.getInt(skillLevel.skill().toString()) < skillLevel.level()) {
                 enough = false;
             }
         }
         if (!enough && player instanceof ClientPlayerEntity) {
-            generateToast(block);
+            this.generateToast(block);
         }
         return enough;
     }
@@ -50,19 +52,26 @@ public class BlockMixin implements ISkillBlock {
     }
 
     private void generateToast(Block block) {
-        if (cantUseToast == null) {
-            this.cantUseToast = new CantUseToast(skillLevels.get(0), block.asItem());
-        }
-        for (SkillLevel skillLevel : skillLevels) {
-            if (!hasRequiredLevel(skillLevel.skill(), skillLevel.level())) {
-                this.cantUseToast.setSkillLevel(skillLevel);
+        SkillLevel toastSkillLevel = null;
+        for (SkillLevel skillLevel : this.skillLevels) {
+            if (!this.hasRequiredLevel(skillLevel.skill(), skillLevel.level())) {
+                toastSkillLevel = skillLevel;
                 break;
             }
         }
+        if (toastSkillLevel == null) return;
+
+        if (this.cantUseToast == null) {
+            this.cantUseToast = new CantUseToast(toastSkillLevel, block.asItem());
+        } else {
+            this.cantUseToast.setSkillLevel(toastSkillLevel);
+        }
+
+
         ToastManager toastManager = MinecraftClient.getInstance().getToastManager();
-        if (toastManager.getToast(CantUseToast.class, cantUseToast) == null) {
-            cantUseToast.reload();
-            toastManager.add(cantUseToast);
+        if (toastManager.getToast(CantUseToast.class, this.cantUseToast) == null) {
+            this.cantUseToast.reload();
+            toastManager.add(this.cantUseToast);
         }
     }
 }

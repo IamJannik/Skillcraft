@@ -1,5 +1,6 @@
 {
   "replace": false,
+  "weight": 1,
   "id": "skillcraft:build",
   "name": "BUILDING",
   "icon": "minecraft:stone_bricks",

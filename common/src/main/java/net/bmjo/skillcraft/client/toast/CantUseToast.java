@@ -47,17 +47,17 @@ public class CantUseToast implements Toast {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         DrawableHelper.drawTexture(matrices, 0, 0, 0, 0, this.getWidth(), this.getHeight(), this.getWidth(), this.getHeight());
 
-        Skill skill = SkillLoader.REGISTRY_SKILLS.get(skillLevel.skill());
-        List<OrderedText> lines = manager.getClient().textRenderer.wrapLines(Text.literal("Needs " + skill.getName() + ": " + skill.getLevelName(skillLevel.level())), 125);
+        Skill skill = SkillLoader.REGISTRY_SKILLS.get(this.skillLevel.skill());
+        List<OrderedText> lines = manager.getClient().textRenderer.wrapLines(Text.literal("Needs " + skill.getName() + ": " + skill.getLevelName(this.skillLevel.level())), 125);
         if (lines.size() == 1) {
-            manager.getClient().textRenderer.draw(matrices, item.getName(), 30.0F, 7.0F, titleColor);
+            manager.getClient().textRenderer.draw(matrices, this.item.getName(), 30.0F, 7.0F, titleColor);
             manager.getClient().textRenderer.draw(matrices, lines.get(0), 30.0F, 18.0F, textColor);
         } else {
             if (startTime < 1500L) {
-                int color = MathHelper.floor(MathHelper.clamp((float)(1500L - startTime) / 300.0F, 0.0F, 1.0F) * 255.0F) << 24 | 67108864;
-                manager.getClient().textRenderer.draw(matrices, item.getName(), 30.0F, 11.0F, titleColor | color);
+                int color = MathHelper.floor(MathHelper.clamp((float) (1500L - startTime) / 300.0F, 0.0F, 1.0F) * 255.0F) << 24 | 67108864;
+                manager.getClient().textRenderer.draw(matrices, this.item.getName(), 30.0F, 11.0F, titleColor | color);
             } else {
-                int color = MathHelper.floor(MathHelper.clamp((float)(startTime - 1500L) / 300.0F, 0.0F, 1.0F) * 252.0F) << 24 | 67108864;
+                int color = MathHelper.floor(MathHelper.clamp((float) (startTime - 1500L) / 300.0F, 0.0F, 1.0F) * 252.0F) << 24 | 67108864;
                 int halfHeight = this.getHeight() / 2;
                 int y = halfHeight - lines.size() * 9 / 2;
 
@@ -74,7 +74,7 @@ public class CantUseToast implements Toast {
             manager.getClient().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.BLOCK_PACKED_MUD_PLACE, 1.0F, 1.0F));
         }
 
-        manager.getClient().getItemRenderer().renderInGui(item.getDefaultStack(), 8, 8);
+        manager.getClient().getItemRenderer().renderInGui(this.item.getDefaultStack(), 8, 8);
         return startTime >= 5000L ? Visibility.HIDE : Visibility.SHOW;
     }
 

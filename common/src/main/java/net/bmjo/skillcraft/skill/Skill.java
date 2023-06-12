@@ -1,13 +1,16 @@
 package net.bmjo.skillcraft.skill;
 
+import com.google.common.collect.Sets;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
-import org.apache.commons.compress.utils.Lists;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 public class Skill {
     private final Identifier id;
@@ -28,70 +31,94 @@ public class Skill {
     }
 
     public Identifier getId() {
-        return id;
+        return this.id;
     }
 
     public String getName() {
-        return name == null ? id.getPath() : name;
+        return this.name == null ? this.id.getPath() : this.name;
     }
 
     public String getDescription() {
-        return description == null ? "Add a description to the Json File." : description;
+        return this.description == null ? "Add a description to the Json File." : this.description;
     }
 
     public ItemStack getIcon() {
-        return icon == null ? Items.STONE_PICKAXE.getDefaultStack() : icon.getDefaultStack();
+        return this.icon == null ? Items.STONE_PICKAXE.getDefaultStack() : this.icon.getDefaultStack();
     }
 
     public int getMaxLevel() {
-        return levels.keySet().stream().max(Comparator.comparingInt(x -> x)).orElse(0);
+        return this.levels.keySet().stream().max(Comparator.comparingInt(x -> x)).orElse(0);
     }
 
     public boolean isMax(final int level) {
-        return level > getMaxLevel();
+        return level > this.getMaxLevel();
     }
 
      public int getLevelCost(int currentLevel, final int amount) {
-        int cost = 0;
+         int cost = 0;
+         int level = currentLevel;
 
-        for (int i = 0; i < amount; i++) {
-            cost += this.nextLevelCost(++currentLevel);
-        }
+         for (int i = 0; i < amount; i++) {
+             cost += this.nextLevelCost(++level);
+         }
 
-        return cost;
-    }
+         return cost;
+     }
 
     protected int nextLevelCost(final int level) {
         // Formula for calculating the required xp/level for the next level.
-        return isMax(level) ? 0 : ((level * level) / (getMaxLevel() + 2)) + 2;
+        return this.isMax(level) ? 0 : ((level * level) / (this.getMaxLevel() + 2)) + 2;
     }
 
     public String getLevelName(final int level) {
-        return isMax(level) ? "Max Level" : levels.containsKey(level) ? levels.get(level).name() : "Level " + level;
+        return this.isMax(level) ? "Max Level" : this.levels.containsKey(level) ? this.levels.get(level).name() : "Level " + level;
     }
 
     public String getLevelDescription(final int level) {
-        return isMax(level) ? "Congrats, you have reached the max level!" : levels.containsKey(level) ? levels.get(level).description() : "";
+        return this.isMax(level) ? "Congrats, you have reached the max level!" : this.levels.containsKey(level) ? this.levels.get(level).description() : "";
     }
 
-    public List<Item> getUnlockItems(final int level) {
-        return levels.containsKey(level) ? levels.get(level).unlockItems() : Lists.newArrayList();
+    public Set<Item> getUnlockItems(final int level) {
+        return this.levels.containsKey(level) ? this.levels.get(level).unlockItems() : Sets.newHashSet();
+    }
+
+    public Map<Integer, Level> getLevels() {
+        return this.levels;
+    }
+
+    public void combineSkill(Skill skill) {
+        Map<Integer, Level> levels = skill.getLevels();
+        for (Level level : levels.values()) {
+            this.combineLevel(level);
+        }
+    }
+
+    private void combineLevel(Level level) {
+        int levelNr = level.level();
+        if (!this.levels.containsKey(levelNr)) {
+            this.levels.put(levelNr, level);
+        } else {
+            Level originalLevel = this.levels.get(levelNr);
+            for (Item item : level.unlockItems()) {
+                originalLevel.unlockItems().add(item);
+            }
+        }
     }
 
     @Override
     public String toString() {
-        return "Skill: " + " ID: " + id + " / name: " + getName() +  ", levels: " + levels + ';';
+        return "Skill: " + " ID: " + this.id + " / name: " + this.getName() + ", levels: " + this.levels + ';';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Skill skill)) return false;
-        return id.equals(skill.id) && Objects.equals(this.getName(), skill.getName());
+        return this.id.equals(skill.id) && Objects.equals(this.getName(), skill.getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, getName());
+        return Objects.hash(this.id, this.getName());
     }
 }

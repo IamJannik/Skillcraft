@@ -17,37 +17,37 @@ public abstract class SkillcraftScrollWidget extends ClickableWidget {
     private int time;
 
     public SkillcraftScrollWidget(int x, int y, Identifier background) {
-        super(x, y, 147, 163, Text.of(""));
+        super(x, y, 147, 163, Text.empty());
         this.BACKGROUND = background;
     }
 
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         this.renderBackground(matrices);
-        this.hovered = isOver(mouseX, mouseY);
+        this.hovered = this.isOver(mouseX, mouseY);
 
         this.ease();
-        renderForeground(matrices, mouseX, mouseY, delta);
+        this.renderForeground(matrices, mouseX, mouseY, delta);
     }
 
     private void ease() {
         int duration = 20;
-        if (this.scrollY % this.getYPerScroll() == 0 || scrollbarDragged || time > duration) {
+        if (this.scrollY % this.getYPerScroll() == 0 || this.scrollbarDragged || this.time > duration) {
             this.time = 0;
             this.startEase = 0;
             return;
         }
         if (this.time == 0) {
-            this.startEase = scrollY;
+            this.startEase = this.scrollY;
         }
 
         int modEase = this.startEase % this.getYPerScroll();
-        if (modEase < getYPerScroll() / 2) {
-            int difference = getYPerScroll() / 2 - modEase;
-            this.scrollY = startEase - (int)(difference * easeInOutSine((double)time / duration));
+        if (modEase < this.getYPerScroll() / 2) {
+            int difference = this.getYPerScroll() / 2 - modEase;
+            this.scrollY = this.startEase - (int) (difference * this.easeInOutSine((double) this.time / duration));
         } else {
-            int difference = getYPerScroll() - modEase;
-            this.scrollY = startEase + (int)(difference * easeInOutSine((double)time / duration));
+            int difference = this.getYPerScroll() - modEase;
+            this.scrollY = this.startEase + (int) (difference * this.easeInOutSine((double) this.time / duration));
         }
 
         this.time++;
@@ -56,7 +56,7 @@ public abstract class SkillcraftScrollWidget extends ClickableWidget {
     private void renderBackground(MatrixStack matrices) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, BACKGROUND);
+        RenderSystem.setShaderTexture(0, this.BACKGROUND);
 
         this.drawTexture(matrices, this.x, this.y, 0, 0, this.width, this.height);
     }
@@ -74,7 +74,7 @@ public abstract class SkillcraftScrollWidget extends ClickableWidget {
                 this.scrollbarDragged = true;
                 return true;
             }
-            return contentClicked(mouseX, mouseY, button);
+            return this.contentClicked(mouseX, mouseY, button);
         }
         return false;
     }
@@ -113,7 +113,7 @@ public abstract class SkillcraftScrollWidget extends ClickableWidget {
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
         if (this.visible && this.isOver(mouseX, mouseY) && this.overflows()) {
-            this.setScrollY(this.scrollY - (int)(amount * getYPerScroll()));
+            this.setScrollY(this.scrollY - (int) (amount * this.getYPerScroll()));
             this.time = 0;
             return true;
         }

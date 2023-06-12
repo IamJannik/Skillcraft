@@ -1,6 +1,8 @@
 package net.bmjo.skillcraft.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.bmjo.skillcraft.SkillcraftIdentifier;
+import net.bmjo.skillcraft.skill.Skill;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.Drawable;
@@ -15,8 +17,6 @@ import net.minecraft.item.Item;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.bmjo.skillcraft.SkillcraftIdentifier;
-import net.bmjo.skillcraft.skill.Skill;
 
 import java.util.List;
 
@@ -48,13 +48,13 @@ public class SkillLevelWidget extends DrawableHelper implements Drawable, Elemen
 
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        renderBackground(matrices);
-        textRenderer.draw(matrices, skill.getLevelName(level), x + 4, y + 3, 0xA09B83);
-        List<OrderedText> descriptionTexts = textRenderer.wrapLines(Text.literal(skill.getLevelDescription(level)), 135);
+        this.renderBackground(matrices);
+        this.textRenderer.draw(matrices, this.skill.getLevelName(this.level), this.x + 4, this.y + 3, 0xA09B83);
+        List<OrderedText> descriptionTexts = this.textRenderer.wrapLines(Text.literal(this.skill.getLevelDescription(this.level)), 135);
         if (descriptionTexts.size() > 0) {
             matrices.push();
             matrices.scale(0.8f, 0.8f, 1.0F);
-            textRenderer.draw(matrices, descriptionTexts.get(0), (x + 4) * (1f / 0.8f), (y + 3 + textRenderer.fontHeight) * (1f / 0.8f), 0xA09B83);
+            this.textRenderer.draw(matrices, descriptionTexts.get(0), (this.x + 4) * (1f / 0.8f), (this.y + 3 + this.textRenderer.fontHeight) * (1f / 0.8f), 0xA09B83);
             matrices.pop();
         }
     }
@@ -64,15 +64,15 @@ public class SkillLevelWidget extends DrawableHelper implements Drawable, Elemen
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, BACKGROUND);
 
-        drawTexture(matrices, this.x, this.y, 0, locked ? HEIGHT : current ? HEIGHT * 2 : 0, WIDTH, HEIGHT, WIDTH , HEIGHT * 3);
+        drawTexture(matrices, this.x, this.y, 0, this.locked ? HEIGHT : this.current ? HEIGHT * 2 : 0, WIDTH, HEIGHT, WIDTH, HEIGHT * 3);
     }
 
     public void renderItems(double scrollY) {
         ItemRenderer itemRenderer = MinecraftClient.getInstance().getItemRenderer();
         RenderSystem.applyModelViewMatrix();
         int item = 0;
-        for (Item unlockItem : skill.getUnlockItems(level)) {
-            itemRenderer.renderGuiItemIcon(unlockItem.getDefaultStack(), x + 4 + 20 * (item), (int) ((y + textRenderer.fontHeight * 2) - scrollY));
+        for (Item unlockItem : this.skill.getUnlockItems(this.level)) {
+            itemRenderer.renderGuiItemIcon(unlockItem.getDefaultStack(), this.x + 4 + 20 * (item), (int) ((this.y + this.textRenderer.fontHeight * 2 + 1) - scrollY));
             item++;
             if (item >= 5) break;
         }

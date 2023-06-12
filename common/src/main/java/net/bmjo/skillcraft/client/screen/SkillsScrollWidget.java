@@ -1,11 +1,11 @@
 package net.bmjo.skillcraft.client.screen;
 
+import net.bmjo.skillcraft.SkillcraftIdentifier;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
-import net.bmjo.skillcraft.SkillcraftIdentifier;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class SkillsScrollWidget extends SkillcraftScrollWidget {
     @Override
     protected boolean contentClicked(double mouseX, double mouseY, int button) {
         for (SkillButton skillButton : this.skillButtons) {
-            if (skillButton.mouseClicked(mouseX, mouseY + scrollY, button)) {
+            if (skillButton.mouseClicked(mouseX, mouseY + this.scrollY, button)) {
                 return true;
             }
         }
@@ -36,7 +36,7 @@ public class SkillsScrollWidget extends SkillcraftScrollWidget {
 
     @Override
     protected boolean overflows() {
-        return getContentsHeight() > (SkillButton.HEIGHT + 4) * 3;
+        return this.getContentsHeight() + 3 > (SkillButton.HEIGHT + 4) * 3;
     }
 
     @Override
@@ -80,10 +80,10 @@ public class SkillsScrollWidget extends SkillcraftScrollWidget {
             int right = this.x + this.width - 19 + 4;
             int top = Math.max(this.y + 45, this.scrollY * (scrollFieldHeigth - height) / this.getMaxScrollY() + this.y + 45);
             int bottom = top + height;
-            drawHorizontalLine(matrices, left, right, top, 0xffA09B83);//TOP
-            drawVerticalLine(matrices, left, top, bottom, 0xffA09B83);//LEFT
-            drawHorizontalLine(matrices, left, right, bottom, 0xffA09B83);//BOTTOM
-            drawVerticalLine(matrices, right, top, bottom, 0xffA09B83);//RIGHT
+            this.drawHorizontalLine(matrices, left, right, top, 0xffA09B83);//TOP
+            this.drawVerticalLine(matrices, left, top, bottom, 0xffA09B83);//LEFT
+            this.drawHorizontalLine(matrices, left, right, bottom, 0xffA09B83);//BOTTOM
+            this.drawVerticalLine(matrices, right, top, bottom, 0xffA09B83);//RIGHT
         }
     }
 

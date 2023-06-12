@@ -1,8 +1,9 @@
 {
   "replace": false,
+  "weight": 0,
   "id": "skillcraft:skill",
   "name": "SKILL",
-  "description": "not implemented jet",
+  "description": "Description",
   "icon": "minecraft:dirt",
   "levels": [
     {
@@ -17,7 +18,7 @@
     {
       "level": 1,
       "name": "Okay",
-      "description": "You can build with wood.",
+      "description": "You are OK.",
       "unlock": [
         "minecraft:oak_planks",
         "minecraft:chest"
@@ -26,7 +27,7 @@
     {
       "level": 5,
       "name": "Expert",
-      "description": "You can build with stone.",
+      "description": "You are Cool.",
       "unlock": [
         "minecraft:cobblestone"
       ],

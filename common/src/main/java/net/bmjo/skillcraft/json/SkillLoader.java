@@ -2,17 +2,20 @@ package net.bmjo.skillcraft.json;
 
 import com.google.gson.JsonObject;
 import dev.architectury.registry.ReloadListenerRegistry;
+import net.bmjo.skillcraft.Skillcraft;
+import net.bmjo.skillcraft.skill.Skill;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourceReloader;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.profiler.Profiler;
-import net.bmjo.skillcraft.Skillcraft;
-import net.bmjo.skillcraft.skill.Skill;
 import org.apache.commons.compress.utils.Lists;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
@@ -42,9 +45,8 @@ public class SkillLoader implements ResourceReloader {
                 skills.add(CompletableFuture.supplyAsync(
                         () -> SkillConvertor.convertSkill(jsonObject)));
             } else {
-                Skill skill = combineMultipleSkills(skillJsons.get(identifier));
-                skills.add(CompletableFuture.supplyAsync(
-                        () -> skill, prepareExecutor));
+                Skill skill = this.combineMultipleSkills(skillJsons.get(identifier));
+                skills.add(CompletableFuture.supplyAsync(() -> skill, prepareExecutor));
             }
         }
         return skills;
