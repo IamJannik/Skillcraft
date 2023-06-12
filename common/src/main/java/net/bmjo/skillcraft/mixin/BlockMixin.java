@@ -18,7 +18,7 @@ import java.util.List;
 
 @Mixin(Block.class)
 public class BlockMixin implements ISkillBlock {
-    List<SkillLevel> skillLevels = Lists.newArrayList();
+    private final List<SkillLevel> skillLevels = Lists.newArrayList();
     private CantUseToast cantUseToast;
 
     @Override

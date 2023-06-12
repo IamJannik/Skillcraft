@@ -1,8 +1,8 @@
 package net.bmjo.skillcraft.mixin;
 
+import net.bmjo.skillcraft.Skillcraft;
 import net.bmjo.skillcraft.client.SkillcraftClient;
 import net.bmjo.skillcraft.client.toast.CantUseToast;
-import net.bmjo.skillcraft.json.SkillLoader;
 import net.bmjo.skillcraft.skill.Skill;
 import net.bmjo.skillcraft.skill.SkillLevel;
 import net.bmjo.skillcraft.util.IEntityDataSaver;
@@ -31,7 +31,7 @@ import java.util.List;
 
 @Mixin(Item.class)
 public class ItemMixin implements ISkillItem {
-    private List<SkillLevel> skillLevels = Lists.newArrayList();
+    private final List<SkillLevel> skillLevels = Lists.newArrayList();
     private CantUseToast cantUseToast;
 
     public void addSkillLevel(SkillLevel skillLevel) {
@@ -94,7 +94,7 @@ public class ItemMixin implements ISkillItem {
         if (!this.skillLevels.isEmpty()) {
             for (SkillLevel skillLevel : this.skillLevels) {
                 if (!this.hasRequiredLevel(skillLevel.skill(), skillLevel.level())) {
-                    Skill skill = SkillLoader.REGISTRY_SKILLS.get(skillLevel.skill());
+                    Skill skill = Skillcraft.SKILLS.get(skillLevel.skill());
                     tooltip.add(Text.literal("Needs " + skill.getName() + ": " + skill.getLevelName(skillLevel.level())).formatted(Formatting.RED));
                 }
             }

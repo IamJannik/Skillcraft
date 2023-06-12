@@ -12,7 +12,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.profiler.Profiler;
 import org.apache.commons.compress.utils.Lists;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -20,7 +19,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 public class SkillLoader implements ResourceReloader {
-    public static Map<Identifier, Skill> REGISTRY_SKILLS = new HashMap<>();
+
     private static final String SKILL_PATH = "skills";
 
     @Override
@@ -30,7 +29,7 @@ public class SkillLoader implements ResourceReloader {
         CompletableFuture<Void> completableFuture = CompletableFuture.allOf(completableFutures.toArray(CompletableFuture[]::new));
         Objects.requireNonNull(synchronizer);
         return completableFuture.thenCompose(synchronizer::whenPrepared).thenAcceptAsync(
-                void_ -> completableFutures.forEach((completableFutureSkill) -> completableFutures.stream().map(CompletableFuture::join).forEach(skill -> REGISTRY_SKILLS.put(skill.getId(), skill))), applyExecutor);
+                void_ -> completableFutures.forEach((completableFutureSkill) -> completableFutures.stream().map(CompletableFuture::join).forEach(skill -> Skillcraft.SKILLS.put(skill.getId(), skill))), applyExecutor);
     }
 
     private List<CompletableFuture<Skill>> buildSkills(ResourceManager resourceManager, Executor prepareExecutor) {

@@ -1,8 +1,8 @@
 package net.bmjo.skillcraft.client.screen;
 
 import dev.architectury.networking.NetworkManager;
+import net.bmjo.skillcraft.Skillcraft;
 import net.bmjo.skillcraft.SkillcraftIdentifier;
-import net.bmjo.skillcraft.json.SkillLoader;
 import net.bmjo.skillcraft.networking.SkillcraftNetworking;
 import net.bmjo.skillcraft.skill.Skill;
 import net.bmjo.skillcraft.util.IEntityDataSaver;
@@ -47,7 +47,7 @@ public class LevelsScrollWidget extends SkillcraftScrollWidget {
     }
 
     public void setSkill(Identifier skillId) {
-        this.skill = SkillLoader.REGISTRY_SKILLS.get(skillId);
+        this.skill = Skillcraft.SKILLS.get(skillId);
         this.createLevels();
         this.reloadLevel(((IEntityDataSaver) this.player).getPersistentData().getInt(this.skill.getId().toString()));
         this.reloadButtons();

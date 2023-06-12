@@ -1,8 +1,8 @@
 package net.bmjo.skillcraft.client.screen;
 
 import com.google.common.collect.Lists;
+import net.bmjo.skillcraft.Skillcraft;
 import net.bmjo.skillcraft.client.SkillcraftClient;
-import net.bmjo.skillcraft.json.SkillLoader;
 import net.bmjo.skillcraft.skill.Skill;
 import net.bmjo.skillcraft.util.SkillComparator;
 import net.fabricmc.api.EnvType;
@@ -35,7 +35,7 @@ public class SkillBookScreen extends Screen {
         this.x = (this.width - WIDTH) / 2;
         this.y = (this.height - HEIGHT) / 2;
 
-        SkillsScrollWidget skillsWidget = new SkillsScrollWidget(this.x, this.y, this.createSkillButtons(SkillLoader.REGISTRY_SKILLS));
+        SkillsScrollWidget skillsWidget = new SkillsScrollWidget(this.x, this.y, this.createSkillButtons(Skillcraft.SKILLS));
         this.skillLevelsWidget = new LevelsScrollWidget(this.x + WIDTH / 2, this.y, this.currentSkill, this.textRenderer);
         this.reloadSkill(this.currentSkill);
 

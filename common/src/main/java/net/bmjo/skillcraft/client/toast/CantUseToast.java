@@ -1,8 +1,8 @@
 package net.bmjo.skillcraft.client.toast;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.bmjo.skillcraft.Skillcraft;
 import net.bmjo.skillcraft.SkillcraftIdentifier;
-import net.bmjo.skillcraft.json.SkillLoader;
 import net.bmjo.skillcraft.skill.Skill;
 import net.bmjo.skillcraft.skill.SkillLevel;
 import net.minecraft.client.gui.DrawableHelper;
@@ -47,7 +47,7 @@ public class CantUseToast implements Toast {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         DrawableHelper.drawTexture(matrices, 0, 0, 0, 0, this.getWidth(), this.getHeight(), this.getWidth(), this.getHeight());
 
-        Skill skill = SkillLoader.REGISTRY_SKILLS.get(this.skillLevel.skill());
+        Skill skill = Skillcraft.SKILLS.get(this.skillLevel.skill());
         List<OrderedText> lines = manager.getClient().textRenderer.wrapLines(Text.literal("Needs " + skill.getName() + ": " + skill.getLevelName(this.skillLevel.level())), 125);
         if (lines.size() == 1) {
             manager.getClient().textRenderer.draw(matrices, this.item.getName(), 30.0F, 7.0F, titleColor);
