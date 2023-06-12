@@ -15,9 +15,6 @@ import java.util.List;
 public class SkillReader {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().serializeNulls().create();
 
-    public SkillReader() {
-    }
-
     public static JsonObject read(Resource resource) {
         return readJson(resource);
     }

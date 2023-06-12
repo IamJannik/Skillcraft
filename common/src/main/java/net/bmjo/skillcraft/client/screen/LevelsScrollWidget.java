@@ -126,7 +126,7 @@ public class LevelsScrollWidget extends SkillcraftScrollWidget {
     @Override
     protected int getContentsHeight() {
         return (SkillLevelWidget.HEIGHT + 4) * (this.levels.size() - 2);
-    }//TODO bei 2 geht nicht
+    }
 
     @Override
     protected int getScrollWindowHeight() {

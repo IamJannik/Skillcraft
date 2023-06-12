@@ -51,7 +51,7 @@ public class SkillLevelWidget extends DrawableHelper implements Drawable, Elemen
         this.renderBackground(matrices);
         this.textRenderer.draw(matrices, this.skill.getLevelName(this.level), this.x + 4, this.y + 3, 0xA09B83);
         List<OrderedText> descriptionTexts = this.textRenderer.wrapLines(Text.literal(this.skill.getLevelDescription(this.level)), 135);
-        if (descriptionTexts.size() > 0) {
+        if (!descriptionTexts.isEmpty()) {
             matrices.push();
             matrices.scale(0.8f, 0.8f, 1.0F);
             this.textRenderer.draw(matrices, descriptionTexts.get(0), (this.x + 4) * (1f / 0.8f), (this.y + 3 + this.textRenderer.fontHeight) * (1f / 0.8f), 0xA09B83);
