@@ -19,12 +19,14 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.apache.commons.compress.utils.Lists;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
 public class LevelsScrollWidget extends SkillcraftScrollWidget {
     private static final Identifier BACKGROUND;
+    @Nullable
     private Skill skill;
     private List<SkillLevelWidget> levels;
     private int currentLevel;
@@ -48,12 +50,15 @@ public class LevelsScrollWidget extends SkillcraftScrollWidget {
 
     public void setSkill(Identifier skillId) {
         this.skill = Skillcraft.SKILLS.get(skillId);
-        this.createLevels();
-        this.reloadLevel(((IEntityDataSaver) this.player).getPersistentData().getInt(this.skill.getId().toString()));
-        this.reloadButtons();
+        if (this.skill != null) {
+            this.createLevels();
+            this.reloadLevel(((IEntityDataSaver) this.player).getPersistentData().getInt(this.skill.getId().toString()));
+            this.reloadButtons();
+        }
     }
 
     private void levelUp() {
+        if (this.skill == null) return;
         boolean creative = this.player.isCreative();
         int currentLevel = this.persistentData.getInt(this.skill.getId().toString());
         int cost = this.skill.getLevelCost(currentLevel, 1);
@@ -75,6 +80,7 @@ public class LevelsScrollWidget extends SkillcraftScrollWidget {
     }
 
     private void createLevels() {
+        if (this.skill == null) return;
         List<SkillLevelWidget> skillLevels = Lists.newArrayList();
         for (int level = 0; level <= this.skill.getMaxLevel(); level++) {
             skillLevels.add(new SkillLevelWidget(this.x + 17, (this.y + 42) + (SkillLevelWidget.HEIGHT + 4) * level, this.skill, level, this.textRenderer));
@@ -97,7 +103,7 @@ public class LevelsScrollWidget extends SkillcraftScrollWidget {
     }
 
     private void reloadButtons() {
-        int cost = this.skill.getLevelCost(this.currentLevel, 1);
+        int cost = this.skill != null ? this.skill.getLevelCost(this.currentLevel, 1) : 0;
         this.levelUpButton.setMessage(Text.literal(String.valueOf(cost)));
     }
 
@@ -135,6 +141,10 @@ public class LevelsScrollWidget extends SkillcraftScrollWidget {
 
     @Override
     protected void renderForeground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        if (this.skill == null) {
+            renderEmptyPage(matrices);
+            return;
+        }
         ItemRenderer itemRenderer = MinecraftClient.getInstance().getItemRenderer();
         itemRenderer.renderGuiItemIcon(this.skill.getIcon(), this.x + this.width / 2 - 10, this.y + 6);
 
@@ -148,6 +158,11 @@ public class LevelsScrollWidget extends SkillcraftScrollWidget {
         disableScissor();
         this.renderScrollButton(matrices);
         this.renderButtons(matrices, mouseX, mouseY, delta);
+    }
+
+    private void renderEmptyPage(MatrixStack matrices) {
+        drawCenteredText(matrices, this.textRenderer, "SKILLCRAFT", this.x + this.width / 2, this.y + 28, 0xA09B83);
+        drawCenteredText(matrices, this.textRenderer, "Click on Skill.", this.x + this.width / 2, y + 126, 0xA09B83);
     }
 
     private void renderLevels(MatrixStack matrices, int mouseX, int mouseY, float delta) {
@@ -173,7 +188,7 @@ public class LevelsScrollWidget extends SkillcraftScrollWidget {
     }
 
     private void renderButtons(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        if (!this.skill.isMax(this.currentLevel + 1)) {
+        if (this.skill != null && !this.skill.isMax(this.currentLevel + 1)) {
             this.levelUpButton.render(matrices, mouseX, mouseY, delta);
         }
     }
